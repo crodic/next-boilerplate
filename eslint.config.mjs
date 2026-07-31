@@ -16,10 +16,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
   ]),
   {
-    rules: {
-      
-    }
-  }
+    rules: {},
+  },
 ]);
 
 export default eslintConfig;

@@ -1,9 +1,9 @@
-import { defineRouting } from 'next-intl/routing';
-import { createNavigation } from 'next-intl/navigation';
-import { env } from '@/env';
+import { defineRouting } from "next-intl/routing";
+import { createNavigation } from "next-intl/navigation";
+import { env } from "@/env";
 
 export const routing = defineRouting({
-  locales: ['en', 'vi'],
+  locales: ["en", "vi"],
   defaultLocale: env.APP_LOCALE,
 });
 

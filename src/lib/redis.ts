@@ -1,5 +1,5 @@
-import { Redis } from 'ioredis';
-import { env } from '@/env';
+import { Redis } from "ioredis";
+import { env } from "@/env";
 
 const globalForRedis = global as unknown as { redis: Redis };
 
@@ -13,6 +13,6 @@ export const redisClientSingleton = () => {
 
 export const redis = globalForRedis.redis ?? redisClientSingleton();
 
-if (process.env.NODE_ENV !== 'production') globalForRedis.redis = redis;
+if (process.env.NODE_ENV !== "production") globalForRedis.redis = redis;
 
 export default redis;

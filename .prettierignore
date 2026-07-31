@@ -1,3 +1,10 @@
 # Ignore artifacts:
 build
 coverage
+
+# Ignore generated UI components:
+src/components/ui/*
+
+# Ignore AI agent folders:
+.agents
+

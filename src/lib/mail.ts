@@ -1,9 +1,13 @@
-import nodemailer from 'nodemailer';
-import { env } from '@/env';
-import hbs, { NodemailerExpressHandlebarsOptions } from 'nodemailer-express-handlebars';
-import path from 'path';
+import nodemailer from "nodemailer";
+import { env } from "@/env";
+import hbs, {
+  NodemailerExpressHandlebarsOptions,
+} from "nodemailer-express-handlebars";
+import path from "path";
 
-const globalForNodemailer = global as unknown as { transporter: nodemailer.Transporter };
+const globalForNodemailer = global as unknown as {
+  transporter: nodemailer.Transporter;
+};
 
 const mailClientSingleton = () => {
   return nodemailer.createTransport({
@@ -20,25 +24,26 @@ const mailClientSingleton = () => {
   });
 };
 
-export const transporter = globalForNodemailer.transporter ?? mailClientSingleton();
+export const transporter =
+  globalForNodemailer.transporter ?? mailClientSingleton();
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   globalForNodemailer.transporter = transporter;
 }
 
 // Attach Handlebars plugin
 const handlebarOptions: NodemailerExpressHandlebarsOptions = {
   viewEngine: {
-    extname: '.hbs',
-    partialsDir: path.resolve('./src/templates'),
-    layoutsDir: path.resolve('./src/templates'),
+    extname: ".hbs",
+    partialsDir: path.resolve("./src/templates"),
+    layoutsDir: path.resolve("./src/templates"),
     defaultLayout: false as any,
   },
-  viewPath: path.resolve('./src/templates'),
-  extName: '.hbs',
+  viewPath: path.resolve("./src/templates"),
+  extName: ".hbs",
 };
 
-transporter.use('compile', hbs(handlebarOptions));
+transporter.use("compile", hbs(handlebarOptions));
 
 export interface SendMailOptions {
   to: string;

@@ -2,9 +2,9 @@ name: CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   REGISTRY: ghcr.io
@@ -13,7 +13,7 @@ env:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,14 +27,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Check Formatting
         run: pnpm run format:check
-        
+
       - name: Run Linting
         run: pnpm run lint
 
@@ -92,14 +92,14 @@ jobs:
           script: |
             # Convert repository name to lowercase for GHCR
             IMAGE_ID=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" | tr '[A-Z]' '[a-z]')
-            
+
             # Pull the latest image
             docker pull $IMAGE_ID
-            
+
             # Stop and remove the old container if it exists
             docker stop nextjs-app || true
             docker rm nextjs-app || true
-            
+
             # Run the new container
             # Adjust ports and env variables as needed for your specific deployment
             docker run -d \

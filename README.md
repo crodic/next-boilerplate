@@ -18,6 +18,7 @@ A modern Next.js boilerplate designed for rapid development with a robust stack 
 ### 1. Prerequisites
 
 Make sure you have installed on your machine:
+
 - [Node.js](https://nodejs.org/) (v20+)
 - [pnpm](https://pnpm.io/)
 - [Docker](https://www.docker.com/) (Required for local DB, Redis, and Mailpit services)
@@ -31,6 +32,7 @@ We provide an interactive script that automatically configures your environment.
 ```
 
 The script will automatically:
+
 1. Initialize your `.env` file based on `.env.example`.
 2. Install all dependencies using `pnpm`.
 3. Ask if you want to run **Docker Compose** to spin up PostgreSQL, Redis, and Mailpit locally.
@@ -79,17 +81,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## 📧 Email Templates & Mailpit
 
-Email templates are located in `src/templates/` and use **Handlebars** syntax (`.hbs`). 
+Email templates are located in `src/templates/` and use **Handlebars** syntax (`.hbs`).
 
 During local development, all outgoing emails are intercepted by **Mailpit** so you don't spam real addresses. You can inspect caught emails by opening the Mailpit Web UI at:
 👉 **[http://localhost:8025](http://localhost:8025)**
 
 ## 🐳 Docker Deployment
 
-A highly-optimized `Dockerfile` using multi-stage builds is included for deploying to production. 
+A highly-optimized `Dockerfile` using multi-stage builds is included for deploying to production.
 
 ```bash
 docker build -t next-boilerplate .
 docker run -p 3000:3000 next-boilerplate
 ```
-*(Make sure to supply production environment variables such as `DB_HOST=postgres` when orchestrating with Docker).*
+
+_(Make sure to supply production environment variables such as `DB_HOST=postgres` when orchestrating with Docker)._

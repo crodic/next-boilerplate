@@ -1,7 +1,7 @@
-import type { NextConfig } from 'next';
-import createNextIntlPlugin from 'next-intl/plugin';
-import { withSentryConfig } from '@sentry/nextjs';
-import { env } from './src/env';
+import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+import { withSentryConfig } from "@sentry/nextjs";
+import { env } from "./src/env";
 
 const withNextIntl = createNextIntlPlugin();
 
@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
 
 const intlConfig = withNextIntl(nextConfig);
 
-const isSentryEnabled = env.NEXT_PUBLIC_ENABLE_SENTRY === 'true';
+const isSentryEnabled = env.NEXT_PUBLIC_ENABLE_SENTRY === "true";
 
 export default isSentryEnabled
   ? withSentryConfig(intlConfig, {
@@ -40,7 +40,6 @@ export default isSentryEnabled
       // This can increase your server load as well as your hosting bill.
       // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
       // side errors will fail.
-      tunnelRoute: '/monitoring',
-
+      tunnelRoute: "/monitoring",
     })
   : intlConfig;
