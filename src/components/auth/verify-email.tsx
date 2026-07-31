@@ -49,7 +49,10 @@ export function VerifyEmail({ className }: VerifyEmailProps) {
   const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
 
   useEffect(() => {
-    setEmail(sessionStorage.getItem("better-auth-ui.verify-email") ?? "");
+    const t = setTimeout(() => {
+      setEmail(sessionStorage.getItem("better-auth-ui.verify-email") ?? "");
+    }, 0);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {

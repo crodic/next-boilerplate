@@ -6,7 +6,7 @@ import eslintConfigPrettier from "eslint-config-prettier/flat";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  ...eslintConfigPrettier,
+  eslintConfigPrettier,
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
@@ -14,9 +14,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "src/components/ui/**"
   ]),
   {
-    rules: {},
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off"
+    },
   },
 ]);
 

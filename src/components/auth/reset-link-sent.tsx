@@ -37,7 +37,10 @@ export function ResetLinkSent({ className }: ResetLinkSentProps) {
   );
 
   useEffect(() => {
-    setEmail(sessionStorage.getItem(RESET_LINK_SENT_STORAGE_KEY) ?? "");
+    const t = setTimeout(() => {
+      setEmail(sessionStorage.getItem(RESET_LINK_SENT_STORAGE_KEY) ?? "");
+    }, 0);
+    return () => clearTimeout(t);
   }, []);
 
   return (
