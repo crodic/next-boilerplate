@@ -46,6 +46,8 @@ jobs:
 
       - name: Build Next.js Application
         run: pnpm run build
+        env:
+          SKIP_ENV_VALIDATION: true
 
   deploy:
     needs: build-and-test
