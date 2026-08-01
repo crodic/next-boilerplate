@@ -3,6 +3,16 @@
 # Stop on errors
 set -e
 
+# Parse arguments
+USE_DOCKER=""
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --docker) USE_DOCKER="1"; shift ;;
+        --local) USE_DOCKER="2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+done
+
 echo "🚀 Starting Next Boilerplate setup..."
 
 # 1. Setup .env
@@ -23,10 +33,14 @@ pnpm install
 
 # 3. Docker vs Local
 echo ""
-echo "🐳 Do you want to use Docker Compose for services (Postgres, Redis, Mailpit)?"
-echo "  1) Yes (Automatically start via docker-compose)"
-echo "  2) No (Skip Docker. Requires manually running Postgres/Redis locally and configuring .env)"
-read -p "Enter your choice (1/2): " choice
+if [ -z "$USE_DOCKER" ]; then
+    echo "🐳 Do you want to use Docker Compose for services (Postgres, Redis, Mailpit)?"
+    echo "  1) Yes (Automatically start via docker-compose)"
+    echo "  2) No (Skip Docker. Requires manually running Postgres/Redis locally and configuring .env)"
+    read -p "Enter your choice (1/2): " choice
+else
+    choice=$USE_DOCKER
+fi
 
 if [ "$choice" == "1" ]; then
     echo "🐳 Starting services via Docker Compose..."
@@ -39,8 +53,10 @@ if [ "$choice" == "1" ]; then
     sleep 3
 else
     echo "💻 You chose to skip Docker. Please ensure local services are running and configured correctly in .env."
-    echo "⏳ Press Enter to continue when you are ready..."
-    read -r
+    if [ -z "$USE_DOCKER" ]; then
+        echo "⏳ Press Enter to continue when you are ready..."
+        read -r
+    fi
 fi
 
 # 4. Database Setup
