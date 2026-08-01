@@ -31,10 +31,6 @@ declare module "@better-auth-ui/core" {
   interface AdditionalFieldRegister {
     label: ReactNode;
   }
-
-  interface AuthPluginRegister {
-    shadcn: import("@better-auth-ui/react").AuthPlugin;
-  }
 }
 
 /**

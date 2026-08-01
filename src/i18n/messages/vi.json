@@ -1,9 +1,27 @@
 {
   "HomePage": {
-    "title": "Chào mừng đến với Next Boilerplate",
-    "description": "Một thiết lập mạnh mẽ cho dự án tiếp theo của bạn.",
-    "deployNow": "Triển khai ngay",
-    "documentation": "Tài liệu"
+    "title": "Xây dựng nhanh hơn với Next.js",
+    "subtitle": "Boilerplate tối thượng cho các ứng dụng web hiện đại. Tích hợp sẵn Next.js 15, Prisma, Better Auth và Tailwind CSS 4 để khởi đầu dự án của bạn.",
+    "getStarted": "Bắt đầu ngay",
+    "documentation": "Tài liệu",
+    "features": {
+      "auth": {
+        "title": "Xác thực bảo mật",
+        "description": "Hỗ trợ sẵn Better Auth với email, mật khẩu và mạng xã hội. Bảo mật tiêu chuẩn sản xuất."
+      },
+      "i18n": {
+        "title": "Đa ngôn ngữ",
+        "description": "Dịch ứng dụng sang nhiều ngôn ngữ mượt mà với next-intl. Hiện đang hỗ trợ Tiếng Anh và Tiếng Việt."
+      },
+      "database": {
+        "title": "ORM mạnh mẽ",
+        "description": "Tương tác cơ sở dữ liệu an toàn kiểu dữ liệu với Prisma ORM. Bao gồm cấu hình Postgres sẵn sàng."
+      },
+      "testing": {
+        "title": "E2E Testing",
+        "description": "Tự động hoá quy trình kiểm thử với Playwright để đảm bảo mọi luồng chức năng quan trọng luôn hoạt động."
+      }
+    }
   },
   "Metadata": {
     "title": "Tạo Next App",

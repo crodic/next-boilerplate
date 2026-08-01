@@ -1,9 +1,27 @@
 {
   "HomePage": {
-    "title": "Welcome to Next Boilerplate",
-    "description": "A robust setup for your next project.",
-    "deployNow": "Deploy Now",
-    "documentation": "Documentation"
+    "title": "Build Faster with Next.js",
+    "subtitle": "The ultimate boilerplate for modern web applications. Packed with Next.js 15, Prisma, Better Auth, and Tailwind CSS 4 to kickstart your next big idea.",
+    "getStarted": "Get Started",
+    "documentation": "Documentation",
+    "features": {
+      "auth": {
+        "title": "Secure Authentication",
+        "description": "Built-in support for Better Auth with email, password, and social providers. Production-ready security."
+      },
+      "i18n": {
+        "title": "Internationalization",
+        "description": "Seamlessly translate your app into multiple languages with next-intl. Currently supporting English and Vietnamese."
+      },
+      "database": {
+        "title": "Powerful ORM",
+        "description": "Type-safe database interactions with Prisma ORM. Includes Postgres setup out-of-the-box."
+      },
+      "testing": {
+        "title": "E2E Testing",
+        "description": "Automated end-to-end testing with Playwright to ensure your critical user journeys never break."
+      }
+    }
   },
   "Metadata": {
     "title": "Create Next App",
