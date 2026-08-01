@@ -128,3 +128,6 @@
     @apply font-sans;
   }
 }
+
+/* Theme color overrides - must come after :root and .dark for correct cascade */
+@import "../assets/css/themes.css";

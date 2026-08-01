@@ -29,7 +29,23 @@
   },
   "Navigation": {
     "adminDashboard": "Admin Dashboard",
-    "settings": "Settings"
+    "settings": "Settings",
+    "general": "General",
+    "dashboard": "Dashboard",
+    "management": "Management",
+    "users": "Users",
+    "search": {
+      "placeholder": "Type a command or search...",
+      "empty": "No results found."
+    }
+  },
+  "Settings": {
+    "appearance": {
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
   },
   "LanguageSwitcher": {
     "toggleLanguage": "Toggle language",

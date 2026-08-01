@@ -11,11 +11,35 @@ import { Link, useRouter } from "@/i18n/routing";
 import { useTheme } from "next-themes";
 import { themePlugin } from "@/lib/auth/theme-plugin";
 import { multiSessionPlugin } from "@/lib/auth/multi-session-plugin";
+import { SearchProvider } from "@/context/search-provider";
+import {
+  ThemeColorProvider,
+  type ColorKey,
+} from "@/context/theme-color-provider";
+import {
+  LayoutProvider,
+  type Collapsible,
+  type Variant,
+} from "@/context/layout-provider";
+import { DirectionProvider, type DirType } from "@/context/direction-provider";
 
 import { useLocale } from "next-intl";
 import { viLocalization } from "@/lib/auth-localization/vi";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export type ServerCookieProps = {
+  initialDir?: DirType;
+  initialColorKey?: ColorKey;
+  initialCollapsible?: Collapsible;
+  initialVariant?: Variant;
+};
+
+export function Providers({
+  children,
+  initialDir,
+  initialColorKey,
+  initialCollapsible,
+  initialVariant,
+}: { children: React.ReactNode } & ServerCookieProps) {
   const router = useRouter();
   const locale = useLocale();
   const [queryClient] = useState(
@@ -37,6 +61,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <BetterAuthProvider
           authClient={authClient}
           localization={locale === "vi" ? viLocalization : undefined}
+          basePaths={{ settings: "/dashboard/settings" }}
           Link={Link}
           navigate={({ to, replace }) =>
             replace ? router.replace(to) : router.push(to)
@@ -68,8 +93,19 @@ export function Providers({ children }: { children: React.ReactNode }) {
             },
           }}
         >
-          {children}
-          <Toaster />
+          <DirectionProvider initialDir={initialDir}>
+            <ThemeColorProvider initialColorKey={initialColorKey}>
+              <LayoutProvider
+                initialCollapsible={initialCollapsible}
+                initialVariant={initialVariant}
+              >
+                <SearchProvider>
+                  {children}
+                  <Toaster />
+                </SearchProvider>
+              </LayoutProvider>
+            </ThemeColorProvider>
+          </DirectionProvider>
         </BetterAuthProvider>
       </TooltipProvider>
       <ReactQueryDevtools initialIsOpen={false} />

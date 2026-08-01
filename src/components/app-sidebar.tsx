@@ -2,191 +2,67 @@
 
 import * as React from "react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
+import { NavGroup } from "@/components/nav-group";
 import { NavUser } from "@/components/nav-user";
+import { sidebarLink } from "@/config/sidebar-link";
+import { useLayout } from "@/context/layout-provider";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { Link } from "@/i18n/routing";
-import {
-  GalleryVerticalEndIcon,
-  AudioLinesIcon,
-  TerminalIcon,
-  TerminalSquareIcon,
-  BotIcon,
-  BookOpenIcon,
-  Settings2Icon,
-  FrameIcon,
-  PieChartIcon,
-  MapIcon,
-} from "lucide-react";
-
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: <GalleryVerticalEndIcon />,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: <AudioLinesIcon />,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: <TerminalIcon />,
-      plan: "Free",
-    },
-  ],
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: <TerminalSquareIcon />,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: <BotIcon />,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: <BookOpenIcon />,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: <Settings2Icon />,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: <FrameIcon />,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: <PieChartIcon />,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: <MapIcon />,
-    },
-  ],
-};
+import Image from "next/image";
 
 import { useSession, useAuth } from "@better-auth-ui/react";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { authClient } = useAuth();
   const { data: session } = useSession(authClient);
+  const { collapsible, variant } = useLayout();
 
   const user = {
-    name: session?.user?.name || data.user.name,
-    email: session?.user?.email || data.user.email,
-    avatar: session?.user?.image || data.user.avatar,
+    name: session?.user?.name || "Anonymous",
+    email: session?.user?.email || "anonymous@example.com",
+    avatar: session?.user?.image || "",
   };
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible={collapsible} variant={variant} {...props}>
       <SidebarHeader>
-        <Link
-          href="/"
-          className="text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex items-center gap-2 overflow-hidden rounded-md p-2 focus-visible:ring-2"
-        >
-          <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-            <GalleryVerticalEndIcon className="size-4" />
-          </div>
-          <div className="flex flex-col gap-0.5 leading-none">
-            <span className="font-semibold">Next Boilerplate</span>
-            <span className="text-xs">v0.1.0</span>
-          </div>
-        </Link>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              size="lg"
+              className="h-auto gap-0 py-0 hover:bg-transparent active:bg-transparent"
+              render={<div />}
+            >
+              <Link
+                href="/"
+                className="grid flex-1 py-2 text-start text-sm leading-tight"
+              >
+                <Image
+                  src="/next.svg"
+                  alt="Logo"
+                  width={120}
+                  height={48}
+                  className="mx-auto max-h-12 w-auto object-contain dark:invert"
+                  priority
+                />
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {sidebarLink.navGroups.map((props) => (
+          <NavGroup key={props.title} {...props} />
+        ))}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

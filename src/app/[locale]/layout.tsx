@@ -7,6 +7,7 @@ import {
 } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -45,9 +46,27 @@ export default async function LocaleLayout({
 
   const messages = await getMessages();
 
+  // Read config cookies server-side to pass as initial values (avoids hydration mismatch)
+  const cookieStore = await cookies();
+  const initialDir =
+    (cookieStore.get("dir")?.value as "ltr" | "rtl") || undefined;
+  const initialColorKey =
+    (cookieStore.get("theme-color")?.value as any) || undefined;
+  const initialCollapsible =
+    (cookieStore.get("layout_collapsible")?.value as any) || undefined;
+  const initialVariant =
+    (cookieStore.get("layout_variant")?.value as any) || undefined;
+
   return (
     <NextIntlClientProvider messages={messages}>
-      <Providers>{children}</Providers>
+      <Providers
+        initialDir={initialDir}
+        initialColorKey={initialColorKey}
+        initialCollapsible={initialCollapsible}
+        initialVariant={initialVariant}
+      >
+        {children}
+      </Providers>
     </NextIntlClientProvider>
   );
 }

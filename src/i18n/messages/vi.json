@@ -29,7 +29,23 @@
   },
   "Navigation": {
     "adminDashboard": "Trang quản trị (Admin)",
-    "settings": "Cài đặt"
+    "settings": "Cài đặt",
+    "general": "Chung",
+    "dashboard": "Bảng điều khiển",
+    "management": "Quản lý",
+    "users": "Người dùng",
+    "search": {
+      "placeholder": "Nhập lệnh hoặc tìm kiếm...",
+      "empty": "Không tìm thấy kết quả."
+    }
+  },
+  "Settings": {
+    "appearance": {
+      "theme": "Giao diện",
+      "light": "Sáng",
+      "dark": "Tối",
+      "system": "Hệ thống"
+    }
   },
   "LanguageSwitcher": {
     "toggleLanguage": "Đổi ngôn ngữ",
