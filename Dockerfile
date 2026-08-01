@@ -26,6 +26,11 @@ COPY . .
 # Generate Prisma Client
 RUN pnpm prisma:generate
 
+# Build-time environment variables to bypass validation
+ENV SKIP_ENV_VALIDATION=true
+ENV BETTER_AUTH_SECRET="dummy-secret-for-build"
+ENV BETTER_AUTH_URL="http://localhost:3000"
+
 # Build Next.js
 RUN pnpm build
 

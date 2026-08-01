@@ -4,7 +4,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { auth } from "../src/lib/auth";
 
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL!,
 });
 
 const prisma = new PrismaClient({
@@ -49,8 +49,12 @@ async function seedAdmin() {
       console.log(`Password: ${password}`);
       console.log(`Role: ${result.user.role}`);
     }
-  } catch (error: any) {
-    console.error("Failed to create admin:", error?.body?.message || error);
+  } catch (error: unknown) {
+    const err = error as any;
+    console.error(
+      "Failed to create admin:",
+      err?.body?.message || err?.message || err
+    );
   }
 }
 

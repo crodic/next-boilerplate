@@ -48,6 +48,8 @@ jobs:
         run: pnpm run build
         env:
           SKIP_ENV_VALIDATION: true
+          BETTER_AUTH_SECRET: "dummy-secret-for-build-process-only"
+          BETTER_AUTH_URL: "http://localhost:3000"
 
   deploy:
     needs: build-and-test
