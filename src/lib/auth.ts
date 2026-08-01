@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma";
-import { admin, openAPI } from "better-auth/plugins";
+import { admin, openAPI, multiSession } from "better-auth/plugins";
 import { mailService } from "@/services/mail.service";
 
 export const auth = betterAuth({
@@ -21,5 +21,11 @@ export const auth = betterAuth({
       );
     },
   },
-  plugins: [admin(), openAPI()],
+  plugins: [
+    admin(),
+    openAPI(),
+    multiSession({
+      maximumSessions: 5,
+    }),
+  ],
 });

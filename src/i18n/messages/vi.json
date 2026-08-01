@@ -26,5 +26,14 @@
   "Metadata": {
     "title": "Tạo Next App",
     "description": "Tạo bởi create next app"
+  },
+  "Navigation": {
+    "adminDashboard": "Trang quản trị (Admin)",
+    "settings": "Cài đặt"
+  },
+  "LanguageSwitcher": {
+    "toggleLanguage": "Đổi ngôn ngữ",
+    "english": "English",
+    "vietnamese": "Tiếng Việt"
   }
 }
