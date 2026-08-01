@@ -1,0 +1,12 @@
+{
+  "HomePage": {
+    "title": "Chào mừng đến với Next Boilerplate",
+    "description": "Một thiết lập mạnh mẽ cho dự án tiếp theo của bạn.",
+    "deployNow": "Triển khai ngay",
+    "documentation": "Tài liệu"
+  },
+  "Metadata": {
+    "title": "Tạo Next App",
+    "description": "Tạo bởi create next app"
+  }
+}

@@ -10,8 +10,12 @@ import { authClient } from "@/lib/auth-client";
 import { Toaster } from "@/components/ui/sonner";
 import { Link, useRouter } from "@/i18n/routing";
 
+import { useLocale } from "next-intl";
+import { viLocalization } from "@/lib/auth-localization/vi";
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const locale = useLocale();
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -36,6 +40,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <TooltipProvider>
           <BetterAuthProvider
             authClient={authClient}
+            localization={locale === "vi" ? viLocalization : undefined}
             Link={Link}
             navigate={({ to, replace }) =>
               replace ? router.replace(to) : router.push(to)

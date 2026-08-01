@@ -41,6 +41,8 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
     NEXT_PUBLIC_ENABLE_SENTRY: z.enum(["true", "false"]).default("false"),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional().or(z.literal("")),
+    NEXT_PUBLIC_APP_LOCALE: z.enum(["en", "vi"]).default("en"),
+    NEXT_PUBLIC_ALLOWED_LOCALES: z.string().default("en,vi"),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   // For Next.js >= 13.4.4, you only need experimental__runtimeEnv
@@ -48,6 +50,8 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_ENABLE_SENTRY: process.env.NEXT_PUBLIC_ENABLE_SENTRY,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    NEXT_PUBLIC_APP_LOCALE: process.env.NEXT_PUBLIC_APP_LOCALE,
+    NEXT_PUBLIC_ALLOWED_LOCALES: process.env.NEXT_PUBLIC_ALLOWED_LOCALES,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,
