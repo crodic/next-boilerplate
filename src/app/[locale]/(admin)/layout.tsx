@@ -10,6 +10,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
+import { cookies } from "next/headers";
+
 export default async function AdminLayout({
   children,
   params,
@@ -21,8 +23,11 @@ export default async function AdminLayout({
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "Navigation" });
 
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false";
+
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
