@@ -10,7 +10,6 @@ A modern Next.js boilerplate designed for rapid development with a robust stack 
 - **Database ORM**: [Prisma](https://www.prisma.io/)
 - **Database**: PostgreSQL (Dockerized)
 - **Caching**: Redis (Dockerized)
-- **Background Jobs**: [Trigger.dev v3](https://trigger.dev/) (Background Tasks Queue)
 - **Email/SMTP**: Nodemailer + Handlebars (Templates in `src/templates/`)
 - **Local Mail Testing**: Mailpit (Dockerized)
 - **Package Manager**: pnpm
@@ -80,8 +79,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `pnpm lint` - Run ESLint.
 - `pnpm format` - Run Prettier to format code.
 - `pnpm prisma:studio` - Open Prisma Studio on port 5555 to manage database records visually.
-- `pnpm run trigger:dev` - Run the local Trigger.dev worker to connect to your cloud project.
-- `pnpm run trigger:deploy` - Deploy your background tasks to Trigger.dev cloud.
 
 ## 🔐 Authentication & Admin
 
@@ -90,14 +87,6 @@ This boilerplate uses **Better Auth** with pre-built components from **Better Au
 - **Settings Pages**: Built-in Account and Security settings (`src/app/[locale]/settings/`).
 - **Admin Dashboard**: Basic admin panel available at `/dashboard`. Requires an admin role to access. You can stop impersonating using the User dropdown.
 - **Theme Plugin**: Integrated Theme toggle logic through Better Auth UI.
-
-## ⚡ Background Jobs (Trigger.dev)
-
-We've integrated [Trigger.dev v3](https://trigger.dev) to handle heavy async tasks like sending emails (e.g. Email Verification) without blocking the main thread.
-
-- Tasks are defined in `src/trigger/`.
-- The `MailService` adapter (`src/services/mail.service.ts`) intelligently switches to using the Trigger.dev queue if `TRIGGER_SECRET_KEY` is provided in `.env`.
-- **Automatic Deployment**: A GitHub Action (`.github/workflows/deploy-trigger.yml`) is included to automatically deploy your background jobs whenever you push to `main` (Requires setting `TRIGGER_ACCESS_TOKEN` in GitHub Secrets).
 
 ## 📧 Email Templates & Mailpit
 

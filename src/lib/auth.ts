@@ -1,8 +1,8 @@
 import { betterAuth } from "better-auth";
-
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma";
 import { admin, openAPI } from "better-auth/plugins";
+import { mailService } from "@/services/mail.service";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -13,10 +13,8 @@ export const auth = betterAuth({
     requireEmailVerification: true,
   },
   emailVerification: {
-    sendOnSignUp: true,
     sendVerificationEmail: async ({ user, url }) => {
-      const { MailService } = await import("@/services/mail.service");
-      await MailService.sendEmailVerification(
+      await mailService.sendEmailVerification(
         user.email,
         user.name || user.email,
         url
