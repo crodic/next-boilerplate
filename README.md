@@ -6,9 +6,11 @@ A modern Next.js boilerplate designed for rapid development with a robust stack 
 
 - **Framework**: [Next.js](https://nextjs.org/) (App Router, React 19)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) & [shadcn/ui](https://ui.shadcn.com/)
+- **Authentication**: [Better Auth](https://better-auth.com/) + Better Auth UI
 - **Database ORM**: [Prisma](https://www.prisma.io/)
 - **Database**: PostgreSQL (Dockerized)
 - **Caching**: Redis (Dockerized)
+- **Background Jobs**: [Trigger.dev v3](https://trigger.dev/) (Background Tasks Queue)
 - **Email/SMTP**: Nodemailer + Handlebars (Templates in `src/templates/`)
 - **Local Mail Testing**: Mailpit (Dockerized)
 - **Package Manager**: pnpm
@@ -78,6 +80,24 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `pnpm lint` - Run ESLint.
 - `pnpm format` - Run Prettier to format code.
 - `pnpm prisma:studio` - Open Prisma Studio on port 5555 to manage database records visually.
+- `pnpm run trigger:dev` - Run the local Trigger.dev worker to connect to your cloud project.
+- `pnpm run trigger:deploy` - Deploy your background tasks to Trigger.dev cloud.
+
+## 🔐 Authentication & Admin
+
+This boilerplate uses **Better Auth** with pre-built components from **Better Auth UI**.
+
+- **Settings Pages**: Built-in Account and Security settings (`src/app/[locale]/settings/`).
+- **Admin Dashboard**: Basic admin panel available at `/dashboard`. Requires an admin role to access. You can stop impersonating using the User dropdown.
+- **Theme Plugin**: Integrated Theme toggle logic through Better Auth UI.
+
+## ⚡ Background Jobs (Trigger.dev)
+
+We've integrated [Trigger.dev v3](https://trigger.dev) to handle heavy async tasks like sending emails (e.g. Email Verification) without blocking the main thread.
+
+- Tasks are defined in `src/trigger/`.
+- The `MailService` adapter (`src/services/mail.service.ts`) intelligently switches to using the Trigger.dev queue if `TRIGGER_SECRET_KEY` is provided in `.env`.
+- **Automatic Deployment**: A GitHub Action (`.github/workflows/deploy-trigger.yml`) is included to automatically deploy your background jobs whenever you push to `main` (Requires setting `TRIGGER_ACCESS_TOKEN` in GitHub Secrets).
 
 ## 📧 Email Templates & Mailpit
 
@@ -88,11 +108,11 @@ During local development, all outgoing emails are intercepted by **Mailpit** so 
 
 ## 🐳 Docker Deployment
 
-A highly-optimized `Dockerfile` using multi-stage builds is included for deploying to production.
+For deploying to production (e.g., a VPS), a highly-optimized `Dockerfile` using multi-stage builds is included, along with a `docker-compose.prod.yml` that sets up the Next.js app, Postgres, and Redis without local-only services like Mailpit.
 
 ```bash
-docker build -t next-boilerplate .
-docker run -p 3000:3000 next-boilerplate
+# Build and run the entire stack for production
+docker compose -f docker-compose.prod.yml up --build -d
 ```
 
-_(Make sure to supply production environment variables such as `DB_HOST=postgres` when orchestrating with Docker)._
+_(Make sure you have correctly configured your `.env` file before running the production compose)._

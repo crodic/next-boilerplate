@@ -7,6 +7,10 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.string().min(1),
     BETTER_AUTH_URL: z.string().url().default("http://localhost:3000"),
 
+    // Trigger.dev
+    TRIGGER_SECRET_KEY: z.string().optional(),
+    TRIGGER_PROJECT_ID: z.string().optional(),
+
     // Database
     DB_HOST: z.string().default("localhost"),
     DB_PORT: z.coerce.number().default(5432),
