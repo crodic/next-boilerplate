@@ -3,8 +3,8 @@ import { createNavigation } from "next-intl/navigation";
 import { env } from "@/env";
 
 export const routing = defineRouting({
-  locales: env.NEXT_PUBLIC_ALLOWED_LOCALES.split(","),
-  defaultLocale: env.NEXT_PUBLIC_APP_LOCALE,
+  locales: (env.NEXT_PUBLIC_ALLOWED_LOCALES || "en,vi").split(","),
+  defaultLocale: env.NEXT_PUBLIC_APP_LOCALE || "en",
   localePrefix: "as-needed",
 });
 
