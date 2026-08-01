@@ -60,9 +60,10 @@ else
 fi
 
 # 4. Database Setup
-echo "🗄️  Configuring Prisma (Generate & Push)..."
+echo "🗄️  Configuring Prisma (Generate, Push, Seed)..."
 pnpm prisma:generate
 pnpm prisma:push
+pnpm prisma:seed
 
 echo ""
 echo "🎉 Setup completed successfully!"

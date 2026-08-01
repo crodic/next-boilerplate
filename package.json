@@ -21,7 +21,6 @@
     "prisma:seed": "prisma db seed",
     "prisma:validate": "prisma validate",
     "prisma:format": "prisma format",
-    "postinstall": "prisma generate",
     "generate:auth": "pnpm dlx auth@latest generate",
     "test": "vitest run",
     "test:watch": "vitest",

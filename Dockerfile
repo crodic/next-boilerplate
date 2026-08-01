@@ -11,10 +11,6 @@ RUN corepack enable pnpm
 
 # Install dependencies based on the preferred package manager
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
-COPY prisma ./prisma
-COPY prisma.config.ts ./
-# Provide dummy DATABASE_URL so prisma generate postinstall doesn't crash
-ENV DATABASE_URL="postgresql://fake:fake@localhost:5432/fake"
 RUN pnpm i --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -31,7 +27,7 @@ COPY . .
 ENV SKIP_ENV_VALIDATION=true
 ENV BETTER_AUTH_SECRET="dummy-secret-for-build"
 ENV BETTER_AUTH_URL="http://localhost:3000"
-ENV DATABASE_URL="postgresql://fake:fake@localhost:5432/fake"
+ENV DATABASE_URL="postgresql://postgresql:postgresql@localhost:5432/kosume"
 
 # Generate Prisma Client
 RUN pnpm prisma:generate
