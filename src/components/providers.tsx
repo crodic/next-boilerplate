@@ -9,6 +9,8 @@ import { AuthProvider as BetterAuthProvider } from "@/components/auth/auth-provi
 import { authClient } from "@/lib/auth-client";
 import { Toaster } from "@/components/ui/sonner";
 import { Link, useRouter } from "@/i18n/routing";
+import { useTheme } from "next-themes";
+import { themePlugin } from "@/lib/auth/theme-plugin";
 
 import { useLocale } from "next-intl";
 import { viLocalization } from "@/lib/auth-localization/vi";
@@ -45,6 +47,31 @@ export function Providers({ children }: { children: React.ReactNode }) {
             navigate={({ to, replace }) =>
               replace ? router.replace(to) : router.push(to)
             }
+            plugins={[
+              themePlugin({
+                useTheme,
+              }),
+            ]}
+            avatar={{
+              upload: async (file) => {
+                const formData = new FormData();
+                formData.append("file", file);
+                const res = await fetch("/api/upload/avatar", {
+                  method: "POST",
+                  body: formData,
+                });
+                if (!res.ok) throw new Error("Failed to upload avatar");
+                const data = await res.json();
+                return data.url;
+              },
+              delete: async (url) => {
+                await fetch("/api/upload/avatar", {
+                  method: "DELETE",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ url }),
+                });
+              },
+            }}
           >
             {children}
             <Toaster />

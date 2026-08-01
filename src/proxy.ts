@@ -42,10 +42,23 @@ export async function proxy(request: NextRequest) {
 
   const locale = pathname.match(/^\/(vi|en)/)?.[1] || routing.defaultLocale;
 
-  if (isProtectedRoute && !session) {
-    const loginUrl = new URL(`/${locale}/auth/login`, request.url);
-    loginUrl.searchParams.set("callbackUrl", request.url);
-    return NextResponse.redirect(loginUrl);
+  if (isProtectedRoute) {
+    if (!session) {
+      const loginUrl = new URL(`/${locale}/auth/login`, request.url);
+      loginUrl.searchParams.set("callbackUrl", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Role check for dashboard (admin routes)
+    if (
+      pathnameWithoutLocale === "/dashboard" ||
+      pathnameWithoutLocale.startsWith("/dashboard/")
+    ) {
+      if (session.user.role !== "admin") {
+        const homeUrl = new URL(`/${locale}/`, request.url);
+        return NextResponse.redirect(homeUrl);
+      }
+    }
   }
 
   if (isAuthRoute && session) {

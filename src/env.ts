@@ -4,6 +4,15 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     APP_URL: z.string().url().default("http://localhost:3000"),
+
+    // Storage
+    STORAGE_DISK: z.enum(["local", "s3"]).default("local"),
+    S3_KEY: z.string().optional(),
+    S3_SECRET: z.string().optional(),
+    S3_REGION: z.string().optional(),
+    S3_BUCKET: z.string().optional(),
+    S3_ENDPOINT: z.string().optional(),
+
     BETTER_AUTH_SECRET: z.string().min(1),
     BETTER_AUTH_URL: z.string().url().default("http://localhost:3000"),
 
