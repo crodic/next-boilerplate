@@ -13,6 +13,8 @@ RUN corepack enable pnpm
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
 COPY prisma ./prisma
 COPY prisma.config.ts ./
+# Provide dummy DATABASE_URL so prisma generate postinstall doesn't crash
+ENV DATABASE_URL="postgresql://fake:fake@localhost:5432/fake"
 RUN pnpm i --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -25,13 +27,14 @@ COPY . .
 # Environment variables must be present at build time
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-# Generate Prisma Client
-RUN pnpm prisma:generate
-
 # Build-time environment variables to bypass validation
 ENV SKIP_ENV_VALIDATION=true
 ENV BETTER_AUTH_SECRET="dummy-secret-for-build"
 ENV BETTER_AUTH_URL="http://localhost:3000"
+ENV DATABASE_URL="postgresql://fake:fake@localhost:5432/fake"
+
+# Generate Prisma Client
+RUN pnpm prisma:generate
 
 # Build Next.js
 RUN pnpm build
