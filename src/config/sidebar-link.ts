@@ -1,4 +1,4 @@
-import { LayoutDashboard, UserLock } from "lucide-react";
+import { LayoutDashboard, UserLock, Settings } from "lucide-react";
 import { type SidebarData } from "@/types/nav";
 
 export const sidebarLink: SidebarData = {
@@ -20,6 +20,16 @@ export const sidebarLink: SidebarData = {
           title: "users",
           url: "/dashboard/users",
           icon: UserLock,
+        },
+      ],
+    },
+    {
+      title: "settings",
+      items: [
+        {
+          title: "website",
+          url: "/dashboard/website",
+          icon: Settings,
         },
       ],
     },

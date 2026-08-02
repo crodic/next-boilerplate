@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import { ChevronsUpDownIcon, LogOut, Settings } from "lucide-react";
 import { useAuth } from "@better-auth-ui/react";
+import { Link } from "@/i18n/routing";
 
 export function NavUser({
   user,
@@ -76,14 +77,11 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem
-                onClick={() =>
-                  navigate({
-                    to: `/dashboard/settings/${viewPaths.settings.account}`,
-                  })
-                }
+                render={<Link href="/dashboard/settings" />}
+                className="flex cursor-pointer items-center gap-2"
               >
-                <Settings className="text-muted-foreground" />
-                {localization.settings.settings}
+                <Settings className="text-muted-foreground size-4" />
+                <span>{localization.settings.settings}</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             {plugins.flatMap((plugin) =>

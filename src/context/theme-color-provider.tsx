@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { setCookie, removeCookie } from "@/lib/cookies";
 
 export type ColorKey =
@@ -41,15 +41,6 @@ export function ThemeColorProvider({
   const [colorKey, _setColorKey] = useState<ColorKey>(
     initialColorKey ?? DEFAULT_COLOR
   );
-
-  useEffect(() => {
-    const htmlElement = document.documentElement;
-    if (colorKey === "neutral") {
-      htmlElement.removeAttribute("data-theme");
-    } else {
-      htmlElement.setAttribute("data-theme", colorKey);
-    }
-  }, [colorKey]);
 
   const setColorKey = (color: ColorKey) => {
     _setColorKey(color);

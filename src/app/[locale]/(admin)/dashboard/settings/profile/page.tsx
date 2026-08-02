@@ -1,8 +1,8 @@
 import { Separator } from "@/components/ui/separator";
-import { AccountForm } from "@/components/admin/settings/account-form";
+import { ProfileForm } from "@/components/admin/settings/profile-form";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
-export default async function AccountSettingsPage({
+export default async function SettingsProfilePage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -14,13 +14,13 @@ export default async function AccountSettingsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium">{t("accountTitle")}</h3>
+        <h3 className="text-lg font-medium">{t("profileTitle")}</h3>
         <p className="text-muted-foreground text-sm">
-          {t("accountDescription")}
+          {t("profileDescription")}
         </p>
       </div>
       <Separator />
-      <AccountForm />
+      <ProfileForm />
     </div>
   );
 }

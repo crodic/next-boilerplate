@@ -34,7 +34,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark[data-theme="neutral"] {
+.dark [data-theme="neutral"] {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -103,7 +103,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark[data-theme="blue"] {
+.dark [data-theme="blue"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -172,7 +172,7 @@
   --sidebar-ring: oklch(0.704 0.191 22.216);
 }
 
-.dark[data-theme="red"] {
+.dark [data-theme="red"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -241,7 +241,7 @@
   --sidebar-ring: oklch(0.702 0.183 293.541);
 }
 
-.dark[data-theme="violet"] {
+.dark [data-theme="violet"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -310,7 +310,7 @@
   --sidebar-ring: oklch(0.852 0.199 91.936);
 }
 
-.dark[data-theme="yellow"] {
+.dark [data-theme="yellow"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -379,7 +379,7 @@
   --sidebar-ring: oklch(0.841 0.238 128.85);
 }
 
-.dark[data-theme="green"] {
+.dark [data-theme="green"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -448,7 +448,7 @@
   --sidebar-ring: oklch(0.75 0.183 55.934);
 }
 
-.dark[data-theme="orange"] {
+.dark [data-theme="orange"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -517,7 +517,7 @@
   --sidebar-ring: oklch(0.712 0.194 13.428);
 }
 
-.dark[data-theme="pink"] {
+.dark [data-theme="pink"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -586,7 +586,7 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
-.dark[data-theme="slate"] {
+.dark [data-theme="slate"] {
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);
@@ -655,7 +655,7 @@
   --sidebar-ring: oklch(0.704 0.14 182.503);
 }
 
-.dark[data-theme="teal"] {
+.dark [data-theme="teal"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -724,7 +724,7 @@
   --sidebar-ring: oklch(0.715 0.143 215.221);
 }
 
-.dark[data-theme="cyan"] {
+.dark [data-theme="cyan"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -793,7 +793,7 @@
   --sidebar-ring: oklch(0.673 0.182 276.935);
 }
 
-.dark[data-theme="indigo"] {
+.dark [data-theme="indigo"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -862,7 +862,7 @@
   --sidebar-ring: oklch(0.714 0.203 305.504);
 }
 
-.dark[data-theme="purple"] {
+.dark [data-theme="purple"] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -961,7 +961,7 @@
   --spacing: 0.25rem;
 }
 
-.dark[data-theme="neonNoir"] {
+.dark [data-theme="neonNoir"] {
   --background: oklch(0.1149 0 0);
   --foreground: oklch(0.8803 0.2083 157.334);
   --card: oklch(0.1591 0 0);

@@ -21,7 +21,14 @@ import Image from "next/image";
 
 import { useSession, useAuth } from "@better-auth-ui/react";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  logoLight,
+  logoDark,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  logoLight?: string;
+  logoDark?: string;
+}) {
   const { authClient } = useAuth();
   const { data: session } = useSession(authClient);
   const { collapsible, variant } = useLayout();
@@ -44,16 +51,34 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <Link
                 href="/"
-                className="grid flex-1 py-2 text-start text-sm leading-tight"
+                className="flex flex-1 items-center justify-center py-2"
               >
-                <Image
-                  src="/next.svg"
-                  alt="Logo"
-                  width={120}
-                  height={48}
-                  className="mx-auto max-h-12 w-auto object-contain dark:invert"
-                  priority
-                />
+                {/* Light Mode Logo */}
+                <div className="flex items-center justify-center dark:hidden">
+                  <Image
+                    src={logoLight || "/next.svg"}
+                    alt="Logo"
+                    width={120}
+                    height={48}
+                    className="h-auto max-h-12 w-auto object-contain"
+                    priority
+                    unoptimized={!!logoLight}
+                  />
+                </div>
+                {/* Dark Mode Logo */}
+                <div
+                  className={`hidden items-center justify-center dark:flex ${!logoDark ? "dark:invert" : ""}`}
+                >
+                  <Image
+                    src={logoDark || "/next.svg"}
+                    alt="Logo"
+                    width={120}
+                    height={48}
+                    className="h-auto max-h-12 w-auto object-contain"
+                    priority
+                    unoptimized={!!logoDark}
+                  />
+                </div>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
