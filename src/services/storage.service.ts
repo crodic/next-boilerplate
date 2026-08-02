@@ -1,71 +1,53 @@
-import { Disk } from "flydrive";
-import { FSDriver } from "flydrive/drivers/fs";
-import { env } from "@/env";
-import path from "path";
+import { storageDriver, LocalDriver } from "./storage";
 
-// Initialize the driver based on env
-let driver: any;
-
-if (env.STORAGE_DISK === "s3") {
-  // S3 setup requires installing `@flydrive/s3`
-  throw new Error(
-    "S3 driver is not implemented yet. Install @flydrive/s3 to use it."
-  );
-} else {
-  // Local File System driver
-  driver = new FSDriver({
-    location: path.join(process.cwd(), "uploads"),
-    visibility: "public",
-  });
-}
-
-export const disk = new Disk(driver);
-
+/**
+ * Storage Service - Facade for file storage operations.
+ * Delegates to the configured storage driver (local, cloudinary, uploadthing, s3).
+ */
 export class StorageService {
   /**
    * Save a file buffer to storage
    */
   static async saveFile(
     filePath: string,
-    buffer: Buffer | ArrayBuffer | Uint8Array
+    buffer: Buffer | ArrayBuffer | Uint8Array,
+    mimeType?: string
   ): Promise<string> {
     const data = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer as any);
-    await disk.put(filePath, data);
-    return this.getUrl(filePath);
+    return storageDriver.saveFile(filePath, data, mimeType);
   }
 
   /**
    * Delete a file from storage
    */
-  static async deleteFile(filePath: string): Promise<void> {
-    const exists = await disk.exists(filePath);
-    if (exists) {
-      await disk.delete(filePath);
-    }
+  static async deleteFile(filePathOrUrl: string): Promise<void> {
+    return storageDriver.deleteFile(filePathOrUrl);
   }
 
   /**
    * Get the public URL of a file
    */
   static getUrl(filePath: string): string {
-    if (env.STORAGE_DISK === "s3") {
-      return `https://${env.S3_BUCKET}.s3.${env.S3_REGION}.amazonaws.com/${filePath}`;
-    }
-    // Local API route
-    return `/api/uploads/${filePath}`;
+    return storageDriver.getUrl(filePath);
   }
 
   /**
-   * Read file stream
+   * Read file stream (only available for local driver)
    */
   static async getStream(filePath: string) {
-    return disk.getStream(filePath);
+    if (storageDriver instanceof LocalDriver) {
+      return storageDriver.getStream(filePath);
+    }
+    throw new Error("getStream is only available for local storage driver");
   }
 
   /**
-   * Read file bytes
+   * Read file bytes (only available for local driver)
    */
   static async getBytes(filePath: string) {
-    return disk.getBytes(filePath);
+    if (storageDriver instanceof LocalDriver) {
+      return storageDriver.getBytes(filePath);
+    }
+    throw new Error("getBytes is only available for local storage driver");
   }
 }

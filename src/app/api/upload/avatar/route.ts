@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     const ext = path.extname(file.name) || ".png";
     const filename = `avatars/${session.user.id}_${crypto.randomBytes(4).toString("hex")}${ext}`;
 
-    const url = await StorageService.saveFile(filename, buffer);
+    const url = await StorageService.saveFile(filename, buffer, file.type);
     return NextResponse.json({ url });
   } catch (_error: any) {
     return new NextResponse(_error.message, { status: 500 });
@@ -48,19 +48,8 @@ export async function DELETE(request: NextRequest) {
       return new NextResponse("No URL provided", { status: 400 });
     }
 
-    let filePath = url;
-    const prefix = "/api/uploads/";
-
-    if (url.startsWith(prefix)) {
-      filePath = url.replace(prefix, "");
-      await StorageService.deleteFile(filePath);
-    } else if (url.includes("amazonaws.com")) {
-      const urlObj = new URL(url);
-      filePath = urlObj.pathname.replace(/^\//, "");
-      await StorageService.deleteFile(filePath);
-    } else {
-      // Base64 or external url, ignore
-    }
+    // Delegate deletion to StorageService — each driver knows how to parse its own URLs
+    await StorageService.deleteFile(url);
 
     return NextResponse.json({ success: true });
   } catch (_error: any) {
