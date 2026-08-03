@@ -1,6 +1,5 @@
 "use client";
 
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -101,10 +100,8 @@ export function Providers({
                 initialVariant={initialVariant}
               >
                 <SearchProvider>
-                  <NuqsAdapter>
-                    {children}
-                    <Toaster />
-                  </NuqsAdapter>
+                  {children}
+                  <Toaster />
                 </SearchProvider>
               </LayoutProvider>
             </ThemeColorProvider>

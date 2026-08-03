@@ -56,7 +56,7 @@ export function AppSidebar({
                 {/* Light Mode Logo */}
                 <div className="flex items-center justify-center dark:hidden">
                   <Image
-                    src={logoLight || "/default-logo.png"}
+                    src={logoLight || "/logo.png"}
                     alt="Logo"
                     width={120}
                     height={48}
@@ -66,9 +66,11 @@ export function AppSidebar({
                   />
                 </div>
                 {/* Dark Mode Logo */}
-                <div className="hidden items-center justify-center dark:flex">
+                <div
+                  className={`hidden items-center justify-center dark:flex ${!logoDark ? "dark:invert" : ""}`}
+                >
                   <Image
-                    src={logoDark || "/default-logo.png"}
+                    src={logoDark || "/logo.png"}
                     alt="Logo"
                     width={120}
                     height={48}

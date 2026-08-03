@@ -1,8 +1,6 @@
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { getLocale } from "next-intl/server";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cookies } from "next/headers";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import "./globals.css";
 
@@ -28,29 +26,21 @@ export default async function RootLayout({
     // Fallback if getLocale fails
   }
 
-  const cookieStore = await cookies();
-  const themeColor = cookieStore.get("theme-color")?.value;
-
   return (
     <html
       lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      data-theme={
-        themeColor && themeColor !== "neutral" ? themeColor : undefined
-      }
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
-        <NuqsAdapter>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-        </NuqsAdapter>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

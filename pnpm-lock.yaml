@@ -16,18 +16,6 @@ importers:
       "@better-auth-ui/react":
         specifier: ^1.6.43
         version: 1.6.43(745eb09e2fca20794d7c17358e6ed6f5)
-      "@dnd-kit/core":
-        specifier: ^6.3.1
-        version: 6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      "@dnd-kit/modifiers":
-        specifier: ^9.0.0
-        version: 9.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
-      "@dnd-kit/sortable":
-        specifier: ^10.0.0
-        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
-      "@dnd-kit/utilities":
-        specifier: ^3.2.2
-        version: 3.2.2(react@19.2.4)
       "@hookform/resolvers":
         specifier: ^5.5.7
         version: 5.5.7(@standard-schema/spec@1.1.0)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(effect@3.17.7)(react-hook-form@7.83.0(react@19.2.4))(valibot@1.4.2(typescript@5.9.3))(zod@4.4.3)
@@ -52,12 +40,6 @@ importers:
       "@tanstack/react-query":
         specifier: ^5.101.4
         version: 5.101.4(react@19.2.4)
-      "@tanstack/react-table":
-        specifier: ^8.21.3
-        version: 8.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      "@tanstack/react-virtual":
-        specifier: ^3.14.9
-        version: 3.14.9(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       better-auth:
         specifier: ^1.6.25
         version: 1.6.25(@opentelemetry/api@1.9.1)(@prisma/client@7.9.1(prisma@7.9.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(magicast@0.3.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3))(mysql2@3.15.3)(next@16.2.12(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(pg@8.22.0)(prisma@7.9.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(magicast@0.3.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vitest@4.1.10)
@@ -106,18 +88,12 @@ importers:
       ioredis:
         specifier: ^5.11.1
         version: 5.11.1
-      lodash.debounce:
-        specifier: ^4.0.8
-        version: 4.0.8
       lucide-react:
         specifier: ^1.27.0
         version: 1.27.0(react@19.2.4)
       mime:
         specifier: ^4.1.0
         version: 4.1.0
-      nanoid:
-        specifier: ^6.0.0
-        version: 6.0.0
       next:
         specifier: 16.2.12
         version: 16.2.12(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -133,15 +109,9 @@ importers:
       nodemailer-express-handlebars:
         specifier: ^7.0.0
         version: 7.0.0(express-handlebars@9.0.1)(nodemailer@9.0.3)
-      nuqs:
-        specifier: ^2.9.4
-        version: 2.9.4(next@16.2.12(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
       pg:
         specifier: ^8.22.0
         version: 8.22.0
-      prisma-extension-pagination:
-        specifier: ^0.7.6
-        version: 0.7.6(@prisma/client@7.9.1(prisma@7.9.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(magicast@0.3.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3))
       radix-ui:
         specifier: ^1.6.7
         version: 1.6.7(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -206,9 +176,6 @@ importers:
       "@testing-library/react":
         specifier: ^16.3.2
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      "@types/lodash.debounce":
-        specifier: ^4.0.9
-        version: 4.0.9
       "@types/node":
         specifier: ^20
         version: 20.19.43
@@ -836,49 +803,6 @@ packages:
       {
         integrity: sha512-lwYN/vDPeNRULcepoE/LO2Pgx+7/RV+S9ARfbc9lr2DtGkOD7pAiruHvbR1RX3Qyf6ja47EWJDMsNK5vK08DJg==,
       }
-
-  "@dnd-kit/accessibility@3.1.1":
-    resolution:
-      {
-        integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==,
-      }
-    peerDependencies:
-      react: ">=16.8.0"
-
-  "@dnd-kit/core@6.3.1":
-    resolution:
-      {
-        integrity: sha512-xkGBRQQab4RLwgXxoqETICr6S5JlogafbhNsidmrkVv2YRs5MLwpjoF2qpiGjQt8S9AoxtIV603s0GIUpY5eYQ==,
-      }
-    peerDependencies:
-      react: ">=16.8.0"
-      react-dom: ">=16.8.0"
-
-  "@dnd-kit/modifiers@9.0.0":
-    resolution:
-      {
-        integrity: sha512-ybiLc66qRGuZoC20wdSSG6pDXFikui/dCNGthxv4Ndy8ylErY0N3KVxY2bgo7AWwIbxDmXDg3ylAFmnrjcbVvw==,
-      }
-    peerDependencies:
-      "@dnd-kit/core": ^6.3.0
-      react: ">=16.8.0"
-
-  "@dnd-kit/sortable@10.0.0":
-    resolution:
-      {
-        integrity: sha512-+xqhmIIzvAYMGfBYYnbKuNicfSsk4RksY2XdmJhT+HAC01nix6fHCztU68jooFiMUB01Ky3F0FyOvhG/BZrWkg==,
-      }
-    peerDependencies:
-      "@dnd-kit/core": ^6.3.0
-      react: ">=16.8.0"
-
-  "@dnd-kit/utilities@3.2.2":
-    resolution:
-      {
-        integrity: sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==,
-      }
-    peerDependencies:
-      react: ">=16.8.0"
 
   "@dotenvx/dotenvx@1.75.1":
     resolution:
@@ -4532,42 +4456,10 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  "@tanstack/react-table@8.21.3":
-    resolution:
-      {
-        integrity: sha512-5nNMTSETP4ykGegmVkhjcS8tTLW6Vl4axfEGQN3v0zdHYbK4UfoqfPChclTrJ4EoK9QynqAu9oUf8VEmrpZ5Ww==,
-      }
-    engines: { node: ">=12" }
-    peerDependencies:
-      react: ">=16.8"
-      react-dom: ">=16.8"
-
-  "@tanstack/react-virtual@3.14.9":
-    resolution:
-      {
-        integrity: sha512-qZyr0FZDP8rDC4WBhsryIZmAd9bveJvFGUJJtskWaew6/0dTRS6wZxnR6VQ5bY2KwL3LjerrHqQLk3a0GKcPXQ==,
-      }
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
   "@tanstack/store@0.11.0":
     resolution:
       {
         integrity: sha512-WlzzCt3xi0G6pCAJu1U+2jiECwabETDpQDi3hfkFZvJii9AuZqEKbOiVarX1/bWhTNjU486yQtJCCasi/0q+Cw==,
-      }
-
-  "@tanstack/table-core@8.21.3":
-    resolution:
-      {
-        integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==,
-      }
-    engines: { node: ">=12" }
-
-  "@tanstack/virtual-core@3.17.7":
-    resolution:
-      {
-        integrity: sha512-bp+v10y65sp2H7WpWfIMyxTNfl8ZVfxFTLRjPIFRryi6FV/J33z4IS53WO4pTk36KlvJ4iLiQz+oaydDC1xbcA==,
       }
 
   "@testing-library/dom@10.4.1":
@@ -4782,12 +4674,6 @@ packages:
     resolution:
       {
         integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==,
-      }
-
-  "@types/lodash.debounce@4.0.9":
-    resolution:
-      {
-        integrity: sha512-Ma5JcgTREwpLRwMM+XwBR7DaWe96nC38uCBDFKZWbNKD+osjVzdpnUSwBcqCptrp16sSOLBAUb50Car5I0TCsQ==,
       }
 
   "@types/lodash@4.17.24":
@@ -8505,12 +8391,6 @@ packages:
       }
     engines: { node: ">=10" }
 
-  lodash.debounce@4.0.8:
-    resolution:
-      {
-        integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==,
-      }
-
   lodash.merge@4.6.2:
     resolution:
       {
@@ -8855,14 +8735,6 @@ packages:
     engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
     hasBin: true
 
-  nanoid@6.0.0:
-    resolution:
-      {
-        integrity: sha512-mkUH+rPkwU2qPadJ0oJZOjeZ5Mxn8Q1UhevwkTRWNuUZzyia3h4rhzK39hxaHTk0o2OxB8W2SQ6A8k23ZDi1pQ==,
-      }
-    engines: { node: ^22 || ^24 || >=26 }
-    hasBin: true
-
   nanostores@1.4.2:
     resolution:
       {
@@ -9032,30 +8904,6 @@ packages:
         integrity: sha512-9qny7Z9DsQU8Ou39ERsPU4OZQlSTP47ShQzuKZ6PRXpYLtIFgl/DEBYEXKlvcEa+9tHVcK8CF81Y2V72qaZhWA==,
       }
     engines: { node: ">=18" }
-
-  nuqs@2.9.4:
-    resolution:
-      {
-        integrity: sha512-lsz3NyCOKmuNAyW052i9RWqcTntoYb2Qm6FxSWnkTDwOJnGS6fzpXDAp0VcwTevw3xgnWebYpDr9rm6+o4DHbw==,
-      }
-    peerDependencies:
-      "@remix-run/react": ">=2"
-      "@tanstack/react-router": ^1
-      next: ">=14.2.0"
-      react: ">=18.2.0 || ^19.0.0-0"
-      react-router: ^5 || ^6 || ^7 || ^8
-      react-router-dom: ^5 || ^6 || ^7
-    peerDependenciesMeta:
-      "@remix-run/react":
-        optional: true
-      "@tanstack/react-router":
-        optional: true
-      next:
-        optional: true
-      react-router:
-        optional: true
-      react-router-dom:
-        optional: true
 
   nypm@0.6.6:
     resolution:
@@ -9646,14 +9494,6 @@ packages:
         integrity: sha512-gjVS5hOP+M3wMm5nmNOucbIrqudzs9v/57bWRHQWLYklXqoXKrVfYW2W9+glfGsqtPgpiz5WwyEEB+ksXIx3gQ==,
       }
     engines: { node: ">=18" }
-
-  prisma-extension-pagination@0.7.6:
-    resolution:
-      {
-        integrity: sha512-FeJwUHCHhRW51y8qys8GEOYWqElJvyxgKJP7+pBOrkUqttlBOdsA5cjtoclLmLAVOpm7vYsi2lFdBm5WB/s43w==,
-      }
-    peerDependencies:
-      "@prisma/client": ^4.9.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
 
   prisma@7.9.1:
     resolution:
@@ -11913,38 +11753,6 @@ snapshots:
   "@csstools/css-tokenizer@4.0.0": {}
 
   "@date-fns/tz@1.5.0": {}
-
-  "@dnd-kit/accessibility@3.1.1(react@19.2.4)":
-    dependencies:
-      react: 19.2.4
-      tslib: 2.8.1
-
-  "@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)":
-    dependencies:
-      "@dnd-kit/accessibility": 3.1.1(react@19.2.4)
-      "@dnd-kit/utilities": 3.2.2(react@19.2.4)
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-      tslib: 2.8.1
-
-  "@dnd-kit/modifiers@9.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)":
-    dependencies:
-      "@dnd-kit/core": 6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      "@dnd-kit/utilities": 3.2.2(react@19.2.4)
-      react: 19.2.4
-      tslib: 2.8.1
-
-  "@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)":
-    dependencies:
-      "@dnd-kit/core": 6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      "@dnd-kit/utilities": 3.2.2(react@19.2.4)
-      react: 19.2.4
-      tslib: 2.8.1
-
-  "@dnd-kit/utilities@3.2.2(react@19.2.4)":
-    dependencies:
-      react: 19.2.4
-      tslib: 2.8.1
 
   "@dotenvx/dotenvx@1.75.1":
     dependencies:
@@ -14244,23 +14052,7 @@ snapshots:
       react-dom: 19.2.4(react@19.2.4)
       use-sync-external-store: 1.6.0(react@19.2.4)
 
-  "@tanstack/react-table@8.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)":
-    dependencies:
-      "@tanstack/table-core": 8.21.3
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-
-  "@tanstack/react-virtual@3.14.9(react-dom@19.2.4(react@19.2.4))(react@19.2.4)":
-    dependencies:
-      "@tanstack/virtual-core": 3.17.7
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-
   "@tanstack/store@0.11.0": {}
-
-  "@tanstack/table-core@8.21.3": {}
-
-  "@tanstack/virtual-core@3.17.7": {}
 
   "@testing-library/dom@10.4.1":
     dependencies:
@@ -14379,10 +14171,6 @@ snapshots:
   "@types/json-schema@7.0.15": {}
 
   "@types/json5@0.0.29": {}
-
-  "@types/lodash.debounce@4.0.9":
-    dependencies:
-      "@types/lodash": 4.17.24
 
   "@types/lodash@4.17.24": {}
 
@@ -16775,8 +16563,6 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
-  lodash.debounce@4.0.8: {}
-
   lodash.merge@4.6.2: {}
 
   lodash@4.18.1: {}
@@ -16933,8 +16719,6 @@ snapshots:
 
   nanoid@3.3.16: {}
 
-  nanoid@6.0.0: {}
-
   nanostores@1.4.2: {}
 
   napi-postinstall@0.3.4: {}
@@ -17037,13 +16821,6 @@ snapshots:
     dependencies:
       path-key: 4.0.0
       unicorn-magic: 0.3.0
-
-  nuqs@2.9.4(next@16.2.12(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4):
-    dependencies:
-      "@standard-schema/spec": 1.1.0
-      react: 19.2.4
-    optionalDependencies:
-      next: 16.2.12(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
 
   nypm@0.6.6:
     dependencies:
@@ -17348,10 +17125,6 @@ snapshots:
   pretty-ms@9.3.0:
     dependencies:
       parse-ms: 4.0.0
-
-  prisma-extension-pagination@0.7.6(@prisma/client@7.9.1(prisma@7.9.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(magicast@0.3.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3)):
-    dependencies:
-      "@prisma/client": 7.9.1(prisma@7.9.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(magicast@0.3.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3)
 
   prisma@7.9.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(magicast@0.3.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3):
     dependencies:
