@@ -28,7 +28,6 @@ export default async function AdminLayout({
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false";
   const dashboardFont = cookieStore.get("dashboard-font")?.value || "geist";
-  const themeColor = cookieStore.get("theme-color")?.value || "neutral";
 
   let fontClass = "";
   if (dashboardFont === "inter") fontClass = inter.className;
@@ -39,10 +38,7 @@ export default async function AdminLayout({
   const settings = await getWebsiteSettings();
 
   return (
-    <div
-      className={fontClass}
-      data-theme={themeColor !== "neutral" ? themeColor : undefined}
-    >
+    <div className={fontClass}>
       <SidebarProvider defaultOpen={defaultOpen}>
         <AppSidebar
           logoLight={settings.logoLight}
