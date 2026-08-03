@@ -55,6 +55,7 @@
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "embla-carousel-react": "^8.6.0",
+    "express-handlebars": "^9.0.1",
     "flydrive": "^2.1.0",
     "handlebars": "^4.7.9",
     "immer": "^11.1.15",

@@ -4,6 +4,7 @@ import hbs, {
   NodemailerExpressHandlebarsOptions,
 } from "nodemailer-express-handlebars";
 import path from "path";
+import { create } from "express-handlebars";
 
 const globalForNodemailer = global as unknown as {
   transporter: nodemailer.Transporter;
@@ -31,14 +32,18 @@ if (process.env.NODE_ENV !== "production") {
   globalForNodemailer.transporter = transporter;
 }
 
+// Instantiate the view engine explicitly to prevent nodemailer-express-handlebars
+// from failing on newer versions of express-handlebars
+const viewEngine = create({
+  extname: ".hbs",
+  partialsDir: path.resolve("./src/templates"),
+  layoutsDir: path.resolve("./src/templates"),
+  defaultLayout: false as any,
+});
+
 // Attach Handlebars plugin
 const handlebarOptions: NodemailerExpressHandlebarsOptions = {
-  viewEngine: {
-    extname: ".hbs",
-    partialsDir: path.resolve("./src/templates"),
-    layoutsDir: path.resolve("./src/templates"),
-    defaultLayout: false as any,
-  },
+  viewEngine: viewEngine as any,
   viewPath: path.resolve("./src/templates"),
   extName: ".hbs",
 };
