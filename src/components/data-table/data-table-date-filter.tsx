@@ -1,12 +1,11 @@
 "use client";
 
-import * as React from "react";
 import type { Column } from "@tanstack/react-table";
 import { CalendarIcon, XCircle } from "lucide-react";
+import * as React from "react";
 import type { DateRange } from "react-day-picker";
-import { formatDate } from "@/lib/format";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -14,6 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { formatDate } from "@/lib/format";
 
 type DateSelection = Date[] | DateRange;
 
@@ -174,26 +174,23 @@ export function DataTableDateFilter<TData>({
 
   return (
     <Popover>
-      <PopoverTrigger
-        className={cn(
-          buttonVariants({ variant: "outline", size: "sm" }),
-          "border-dashed font-normal"
-        )}
-      >
-        {hasValue ? (
-          <div
-            role="button"
-            aria-label={`Clear ${title} filter`}
-            tabIndex={0}
-            onClick={onReset}
-            className="focus-visible:ring-ring rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-1 focus-visible:outline-none"
-          >
-            <XCircle />
-          </div>
-        ) : (
-          <CalendarIcon />
-        )}
-        {label}
+      <PopoverTrigger asChild>
+        <Button variant="outline" className="border-dashed font-normal">
+          {hasValue ? (
+            <div
+              role="button"
+              aria-label={`Clear ${title} filter`}
+              tabIndex={0}
+              onClick={onReset}
+              className="focus-visible:ring-ring rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-1 focus-visible:outline-none"
+            >
+              <XCircle />
+            </div>
+          ) : (
+            <CalendarIcon />
+          )}
+          {label}
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         {multiple ? (
@@ -217,16 +214,6 @@ export function DataTableDateFilter<TData>({
             }
             onSelect={onSelect}
           />
-        )}
-        {hasValue && (
-          <Button
-            size="default"
-            variant="ghost"
-            className="w-full rounded-none"
-            onClick={() => onSelect(undefined)}
-          >
-            Clear
-          </Button>
         )}
       </PopoverContent>
     </Popover>

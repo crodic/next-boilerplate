@@ -8,7 +8,7 @@ import {
   EyeOff,
   X,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -16,6 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 interface DataTableColumnHeaderProps<
   TData,

@@ -6,8 +6,7 @@ import { Download, Plus, Trash } from "lucide-react";
 
 import { exportTableToCSV } from "@/lib/export";
 import { Button } from "@/components/ui/button";
-import { useState, useTransition } from "react";
-import { CreateUserDialog } from "./create-user-dialog";
+import { useTransition } from "react";
 import { deleteUsersAction } from "../_lib/actions";
 import { toast } from "sonner";
 
@@ -18,7 +17,6 @@ interface UsersTableToolbarActionsProps {
 export function UsersTableToolbarActions({
   table,
 }: UsersTableToolbarActionsProps) {
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const selectedRows = table.getFilteredSelectedRowModel().rows;
@@ -42,37 +40,33 @@ export function UsersTableToolbarActions({
   return (
     <div className="flex items-center gap-2">
       {hasSelectedRows ? (
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={handleDeleteSelected}
-          disabled={isPending}
-        >
-          <Trash className="mr-2 size-4" aria-hidden="true" />
-          Delete ({selectedRows.length})
-        </Button>
+        <>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              exportTableToCSV(table, {
+                filename: "users",
+                excludeColumns: ["select", "actions"],
+                onlySelected: true,
+              })
+            }
+          >
+            <Download className="mr-2 size-4" aria-hidden="true" />
+            Export Selected
+          </Button>
+
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={handleDeleteSelected}
+            disabled={isPending}
+          >
+            <Trash className="mr-2 size-4" aria-hidden="true" />
+            Delete ({selectedRows.length})
+          </Button>
+        </>
       ) : null}
-
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() =>
-          exportTableToCSV(table, {
-            filename: "users",
-            excludeColumns: ["select", "actions"],
-          })
-        }
-      >
-        <Download className="mr-2 size-4" aria-hidden="true" />
-        Export
-      </Button>
-
-      <Button size="sm" onClick={() => setIsCreateOpen(true)}>
-        <Plus className="mr-2 size-4" aria-hidden="true" />
-        New User
-      </Button>
-
-      <CreateUserDialog open={isCreateOpen} onOpenChange={setIsCreateOpen} />
     </div>
   );
 }

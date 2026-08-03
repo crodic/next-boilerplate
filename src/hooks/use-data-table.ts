@@ -1,8 +1,6 @@
-import * as React from "react";
 import {
   type ColumnFiltersState,
   getCoreRowModel,
-  getExpandedRowModel,
   getFacetedMinMaxValues,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -10,7 +8,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   type PaginationState,
-  type ExpandedState,
   type RowSelectionState,
   type SortingState,
   type TableOptions,
@@ -19,7 +16,6 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
-import type { ExtendedColumnSort, QueryKeys } from "@/types/data-table";
 import {
   parseAsArrayOf,
   parseAsInteger,
@@ -29,8 +25,11 @@ import {
   useQueryState,
   useQueryStates,
 } from "nuqs";
-import { getSortingStateParser } from "@/lib/parsers";
+import * as React from "react";
+
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
+import { getSortingStateParser } from "@/lib/parsers";
+import type { ExtendedColumnSort, QueryKeys } from "@/types/data-table";
 
 const PAGE_KEY = "page";
 const PER_PAGE_KEY = "perPage";
@@ -114,9 +113,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
 
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(
     initialState?.rowSelection ?? {}
-  );
-  const [expanded, setExpanded] = React.useState<ExpandedState>(
-    initialState?.expanded ?? {}
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(initialState?.columnVisibility ?? {});
@@ -270,7 +266,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     [debouncedSetFilterValues, filterableColumns, enableAdvancedFilter]
   );
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     ...tableProps,
     columns,
@@ -282,7 +277,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
       columnVisibility,
       rowSelection,
       columnFilters,
-      expanded,
     },
     defaultColumn: {
       ...tableProps.defaultColumn,
@@ -290,13 +284,11 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
-    onExpandedChange: setExpanded,
     onPaginationChange,
     onSortingChange,
     onColumnFiltersChange,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),

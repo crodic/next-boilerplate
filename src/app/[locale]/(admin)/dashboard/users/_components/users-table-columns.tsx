@@ -51,6 +51,7 @@ export function getColumns(): ColumnDef<User>[] {
       enableHiding: false,
     },
     {
+      id: "name",
       accessorKey: "name",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} label="Name" />
@@ -60,8 +61,14 @@ export function getColumns(): ColumnDef<User>[] {
       ),
       enableSorting: true,
       enableHiding: false,
+      enableColumnFilter: true,
+      meta: {
+        variant: "text",
+        label: "Name",
+      },
     },
     {
+      id: "email",
       accessorKey: "email",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} label="Email" />
@@ -71,8 +78,14 @@ export function getColumns(): ColumnDef<User>[] {
       ),
       enableSorting: true,
       enableHiding: true,
+      enableColumnFilter: true,
+      meta: {
+        variant: "text",
+        label: "Email",
+      },
     },
     {
+      id: "role",
       accessorKey: "role",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} label="Role" />
@@ -87,11 +100,21 @@ export function getColumns(): ColumnDef<User>[] {
       },
       enableSorting: true,
       enableHiding: true,
+      enableColumnFilter: true,
+      meta: {
+        variant: "multiSelect",
+        label: "Role",
+        options: [
+          { label: "Admin", value: "admin" },
+          { label: "User", value: "user" },
+        ],
+      },
       filterFn: (row, id, value) => {
         return Array.isArray(value) && value.includes(row.getValue(id));
       },
     },
     {
+      id: "createdAt",
       accessorKey: "createdAt",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} label="Joined At" />

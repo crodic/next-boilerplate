@@ -1,21 +1,12 @@
 import type { ColumnSort, Row, RowData } from "@tanstack/react-table";
 import type { DataTableConfig } from "@/config/data-table";
-export interface PaginateQueryParams {
-  page?: number;
-  limit?: number;
-  per_page?: number;
-  search?: string;
-}
 import type { FilterItemSchema } from "@/lib/parsers";
-import { type AsyncSelectResponse } from "@/components/data-table/data-table-async-select-filter";
 
 declare module "@tanstack/react-table" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableMeta<TData extends RowData> {
     queryKeys?: QueryKeys;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
     label?: string;
     placeholder?: string;
@@ -23,11 +14,7 @@ declare module "@tanstack/react-table" {
     options?: Option[];
     range?: [number, number];
     unit?: string;
-    icon?: React.FC<React.SVGProps<SVGSVGElement>>;
-    fetchOptions?: (
-      params: PaginateQueryParams
-    ) => Promise<AsyncSelectResponse>;
-    searchKey?: string;
+    icon?: React.ComponentType<React.ComponentProps<"svg">>;
   }
 }
 
@@ -43,7 +30,7 @@ export interface Option {
   label: string;
   value: string;
   count?: number;
-  icon?: React.FC<React.SVGProps<SVGSVGElement>>;
+  icon?: React.ComponentType<React.ComponentProps<"svg">>;
 }
 
 export type FilterOperator = DataTableConfig["operators"][number];

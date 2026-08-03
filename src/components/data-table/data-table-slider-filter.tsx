@@ -1,11 +1,8 @@
 "use client";
 
-import * as React from "react";
 import type { Column } from "@tanstack/react-table";
 import { PlusCircle, XCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +13,7 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
 
 interface Range {
   min: number;
@@ -124,7 +122,7 @@ export function DataTableSliderFilter<TData>({
   );
 
   const onSliderValueChange = React.useCallback(
-    (value: number | readonly number[]) => {
+    (value: RangeValue) => {
       if (Array.isArray(value) && value.length === 2) {
         column.setFilterValue(value);
       }
@@ -144,33 +142,34 @@ export function DataTableSliderFilter<TData>({
 
   return (
     <Popover>
-      <PopoverTrigger
-        className={cn(
-          buttonVariants({ variant: "outline", size: "sm" }),
-          "h-8 w-full justify-start gap-2 border-dashed px-3 lg:w-fit",
-          columnFilterValue &&
-            (columnFilterValue[0] !== min || columnFilterValue[1] !== max) &&
-            "border-solid"
-        )}
-      >
-        <PlusCircle className="size-4" />
-        <span className="text-xs font-medium">{title}</span>
-        {columnFilterValue &&
-          (columnFilterValue[0] !== min || columnFilterValue[1] !== max) && (
-            <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
-              <div className="flex gap-1">
-                <Badge
-                  variant="secondary"
-                  className="rounded-sm px-1 font-normal"
-                >
-                  {columnFilterValue[0]}
-                  {unit} - {columnFilterValue[1]}
-                  {unit}
-                </Badge>
-              </div>
-            </>
+      <PopoverTrigger asChild>
+        <Button variant="outline" className="border-dashed font-normal">
+          {columnFilterValue ? (
+            <div
+              role="button"
+              aria-label={`Clear ${title} filter`}
+              tabIndex={0}
+              className="focus-visible:ring-ring rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-1 focus-visible:outline-none"
+              onClick={onReset}
+            >
+              <XCircle />
+            </div>
+          ) : (
+            <PlusCircle />
           )}
+          <span>{title}</span>
+          {columnFilterValue ? (
+            <>
+              <Separator
+                orientation="vertical"
+                className="mx-0.5 data-[orientation=vertical]:h-4"
+              />
+              {formatValue(columnFilterValue[0])} -{" "}
+              {formatValue(columnFilterValue[1])}
+              {unit ? ` ${unit}` : ""}
+            </>
+          ) : null}
+        </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className="flex w-auto flex-col gap-4">
         <div className="flex flex-col gap-3">
@@ -236,13 +235,14 @@ export function DataTableSliderFilter<TData>({
             max={max}
             step={step}
             value={range}
-            onValueChange={onSliderValueChange}
+            onValueChange={(val) =>
+              onSliderValueChange(val as [number, number])
+            }
           />
         </div>
         <Button
           aria-label={`Clear ${title} filter`}
           variant="outline"
-          size="sm"
           onClick={onReset}
         >
           Clear

@@ -1,7 +1,7 @@
 import "server-only";
 
 import prisma from "@/lib/prisma";
-import { parseAsInteger } from "nuqs/server";
+import { parseAsInteger, parseAsString } from "nuqs/server";
 import { getSortingStateParser, getFiltersStateParser } from "@/lib/parsers";
 import { type User } from "@/generated/prisma/client";
 import {
@@ -18,8 +18,10 @@ export async function getUsers(searchParams: {
 
   const sort =
     getSortingStateParser<User>().parseServerSide(searchParams.sort) || [];
-  const filters =
-    getFiltersStateParser<User>().parseServerSide(searchParams.filters) || [];
+  const nameFilter = parseAsString.parseServerSide(searchParams.name);
+  const emailFilter = parseAsString.parseServerSide(searchParams.email);
+  const roleFilter = parseAsString.parseServerSide(searchParams.role);
+
   const joinOperator =
     typeof searchParams.joinOperator === "string"
       ? searchParams.joinOperator
@@ -31,32 +33,30 @@ export async function getUsers(searchParams: {
       ? sort.map((s) => ({ [s.id]: s.desc ? "desc" : "asc" }))
       : { createdAt: "desc" };
 
-  // Note: Advanced filtering logic to map ExtendedColumnFilter to Prisma `where` clause goes here.
-  // For now, we will handle basic filters manually or just return an empty where clause if not implemented.
   const where: any = {};
+  const conditions: any[] = [];
 
-  if (filters.length > 0) {
-    const conditions = filters.map((filter) => {
-      // Basic implementation of filters
-      if (filter.id === "name") {
-        return {
-          name: { contains: filter.value as string, mode: "insensitive" },
-        };
-      }
-      if (filter.id === "email") {
-        return {
-          email: { contains: filter.value as string, mode: "insensitive" },
-        };
-      }
-      if (filter.id === "role") {
-        const roles = Array.isArray(filter.value)
-          ? filter.value
-          : [filter.value];
-        return { role: { in: roles } };
-      }
-      return {};
+  if (nameFilter) {
+    conditions.push({
+      name: { contains: nameFilter, mode: "insensitive" },
     });
+  }
 
+  if (emailFilter) {
+    conditions.push({
+      email: { contains: emailFilter, mode: "insensitive" },
+    });
+  }
+
+  if (roleFilter) {
+    // roleFilter comes in as a comma-separated string like "admin,user"
+    const roles = roleFilter.split(",");
+    conditions.push({
+      role: { in: roles },
+    });
+  }
+
+  if (conditions.length > 0) {
     if (joinOperator === "or") {
       where.OR = conditions;
     } else {

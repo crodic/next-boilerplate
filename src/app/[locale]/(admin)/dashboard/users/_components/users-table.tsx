@@ -6,7 +6,9 @@ import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/data-table/data-table";
 import { getColumns } from "./users-table-columns";
 import { UsersTableToolbarActions } from "./users-table-toolbar-actions";
-import { dataTableConfig } from "@/config/data-table";
+
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
+import { DataTableSortList } from "@/components/data-table/data-table-sort-list";
 
 interface UsersTableProps {
   data: User[];
@@ -15,11 +17,13 @@ interface UsersTableProps {
 
 export function UsersTable({ data, pageCount }: UsersTableProps) {
   const columns = React.useMemo(() => getColumns(), []);
+  const [isPending, startTransition] = React.useTransition();
 
   const { table } = useDataTable({
     data,
     columns,
     pageCount,
+    startTransition,
     initialState: {
       sorting: [{ id: "createdAt", desc: true }],
       columnVisibility: {
@@ -31,8 +35,13 @@ export function UsersTable({ data, pageCount }: UsersTableProps) {
   });
 
   return (
-    <DataTable table={table}>
-      <UsersTableToolbarActions table={table} />
+    <DataTable
+      table={table}
+      actionBar={<UsersTableToolbarActions table={table} />}
+    >
+      <DataTableToolbar table={table}>
+        <DataTableSortList table={table} />
+      </DataTableToolbar>
     </DataTable>
   );
 }
