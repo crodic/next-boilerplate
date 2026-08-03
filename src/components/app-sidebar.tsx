@@ -47,7 +47,7 @@ export function AppSidebar({
             <SidebarMenuButton
               size="lg"
               className="h-auto gap-0 py-0 hover:bg-transparent active:bg-transparent"
-              render={<div />}
+              asChild
             >
               <Link
                 href="/"
