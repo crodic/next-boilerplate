@@ -143,6 +143,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 return (
                   <CommandItem
                     key={option.value}
+                    value={option.value}
                     className="[&>svg:last-child]:hidden"
                     onSelect={() => onItemSelect(option, isSelected)}
                   >

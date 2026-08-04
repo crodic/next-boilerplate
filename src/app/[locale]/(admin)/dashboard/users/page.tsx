@@ -1,5 +1,6 @@
+import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
-import prisma from "@/lib/prisma";
+import { headers } from "next/headers";
 import {
   Card,
   CardContent,
@@ -7,24 +8,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 
-export default async function DashboardPage({
-  params,
-}: {
+import { UsersTable } from "./components/users-table";
+import {
+  getUserRoleCounts,
+  getUserStatusCounts,
+  getUsers,
+} from "./lib/queries";
+import { searchParamsCache } from "./lib/validations";
+
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+interface UsersPageProps {
   params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
+  searchParams: SearchParams;
+}
+
+export default async function DashboardPage(props: UsersPageProps) {
+  const { locale } = await props.params;
   setRequestLocale(locale);
 
   // Verify Admin Session
@@ -36,11 +39,6 @@ export default async function DashboardPage({
     // If not admin, you could redirect or show an unauthorized message
     // For now, let's just let it load to show the UI
   }
-
-  // Fetch users using Prisma
-  const users = await prisma.user.findMany({
-    orderBy: { createdAt: "desc" },
-  });
 
   return (
     <div className="flex flex-col gap-8">
@@ -56,45 +54,28 @@ export default async function DashboardPage({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Joined</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell className="font-medium">{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={user.role === "admin" ? "default" : "secondary"}
-                    >
-                      {user.role}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {user.createdAt
-                      ? new Date(user.createdAt).toLocaleDateString()
-                      : "N/A"}
-                  </TableCell>
-                </TableRow>
-              ))}
-              {users.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center">
-                    No users found.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+          <UsersTableWrapper {...props} />
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+async function UsersTableWrapper(props: UsersPageProps) {
+  const searchParams = await props.searchParams;
+  const search = searchParamsCache.parse(searchParams);
+
+  const [users, roleCounts, statusCounts] = await Promise.all([
+    getUsers(search),
+    getUserRoleCounts(),
+    getUserStatusCounts(),
+  ]);
+
+  return (
+    <UsersTable
+      data={users}
+      roleCounts={roleCounts}
+      statusCounts={statusCounts}
+    />
   );
 }

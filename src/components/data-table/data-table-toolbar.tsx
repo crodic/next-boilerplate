@@ -81,6 +81,7 @@ function DataTableToolbarFilter<TData>({
 
       switch (columnMeta.variant) {
         case "text":
+          console.log(`DEBUG Input ${column.id} value:`, column.getFilterValue());
           return (
             <Input
               placeholder={columnMeta.placeholder ?? columnMeta.label}

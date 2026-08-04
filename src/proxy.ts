@@ -8,8 +8,7 @@ import { headers } from "next/headers";
 const intlMiddleware = createMiddleware(routing);
 
 const AUTH_ROUTES = [
-  "/auth/login",
-  "/auth/register",
+  "/auth/sign-in",
   "/auth/sign-up",
   "/auth/forgot-password",
   "/auth/reset-password",
@@ -44,7 +43,7 @@ export async function proxy(request: NextRequest) {
 
   if (isProtectedRoute) {
     if (!session) {
-      const loginUrl = new URL(`/${locale}/auth/login`, request.url);
+      const loginUrl = new URL(`/${locale}/auth/sign-in`, request.url);
       loginUrl.searchParams.set("callbackUrl", request.url);
       return NextResponse.redirect(loginUrl);
     }
