@@ -16,6 +16,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "src/components/ui/**",
     ".lintstagedrc.mjs",
+    "src/components/data-table/**",
   ]),
   {
     rules: {

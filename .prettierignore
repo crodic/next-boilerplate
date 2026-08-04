@@ -4,6 +4,7 @@ coverage
 
 # Ignore generated UI components:
 src/components/ui/*
+src/components/data-table/*
 
 # Ignore AI agent folders:
 .agents
