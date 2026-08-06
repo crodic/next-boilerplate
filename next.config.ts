@@ -7,7 +7,7 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   /* config options here */
-  reactCompiler: true,
+  // reactCompiler: true, // disabled because it breaks TanStack table re-renders
 };
 
 const intlConfig = withNextIntl(nextConfig);
