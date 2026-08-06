@@ -3,7 +3,7 @@
 import type { Row } from "@tanstack/react-table";
 import { Loader, Trash } from "lucide-react";
 import * as React from "react";
-import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,10 +25,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import type { Prisma, User } from "@/generated/prisma/client";
+import type { User } from "@/generated/prisma/client";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
-import { deleteUsers } from "../lib/actions";
+import { useDeleteUsersMutation } from "../_hooks/mutations";
 
 interface DeleteUsersDialogProps extends React.ComponentPropsWithoutRef<
   typeof Dialog
@@ -44,23 +44,18 @@ export function DeleteUsersDialog({
   onSuccess,
   ...props
 }: DeleteUsersDialogProps) {
-  const [isDeletePending, startDeleteTransition] = React.useTransition();
+  const { mutateAsync: deleteUsers, isPending: isDeletePending } =
+    useDeleteUsersMutation();
   const isDesktop = useMediaQuery("(min-width: 640px)");
 
   function onDelete() {
-    startDeleteTransition(async () => {
-      const { error } = await deleteUsers({
-        ids: users.map((user) => user.id),
-      });
-
-      if (error) {
-        toast.error(error);
-        return;
+    deleteUsers({
+      ids: users.map((user) => user.id),
+    }).then((res) => {
+      if (!res.error) {
+        props.onOpenChange?.(false);
+        onSuccess?.();
       }
-
-      props.onOpenChange?.(false);
-      toast.success("Users deleted");
-      onSuccess?.();
     });
   }
 

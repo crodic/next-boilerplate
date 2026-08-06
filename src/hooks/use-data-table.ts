@@ -1,5 +1,3 @@
-/* eslint-disable */
-// @ts-nocheck
 import {
   type ColumnFiltersState,
   getCoreRowModel,
@@ -27,7 +25,6 @@ import {
   useQueryState,
   useQueryStates,
 } from "nuqs";
-import { useRouter } from "next/navigation";
 import * as React from "react";
 
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
@@ -90,7 +87,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   const sortKey = queryKeys?.sort ?? SORT_KEY;
   const filtersKey = queryKeys?.filters ?? FILTERS_KEY;
   const joinOperatorKey = queryKeys?.joinOperator ?? JOIN_OPERATOR_KEY;
-  const router = useRouter();
 
   const queryStateOptions = React.useMemo<
     Omit<UseQueryStateOptions<string>, "parse">
@@ -132,26 +128,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
       .withDefault(initialState?.pagination?.pageSize ?? 10)
   );
 
-  const refreshAfterUrlUpdate = React.useCallback(
-    async (
-      update:
-        | Promise<URLSearchParams>
-        | Array<Promise<URLSearchParams> | undefined>
-        | undefined
-    ) => {
-      if (Array.isArray(update)) {
-        await Promise.all(update.filter(Boolean));
-      } else if (update) {
-        await update;
-      }
-
-      if (!shallow) {
-        router.refresh();
-      }
-    },
-    [router, shallow]
-  );
-
   const pagination: PaginationState = React.useMemo(() => {
     return {
       pageIndex: page - 1, // zero-based index -> one-based index
@@ -163,18 +139,14 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     (updaterOrValue: Updater<PaginationState>) => {
       if (typeof updaterOrValue === "function") {
         const newPagination = updaterOrValue(pagination);
-        void refreshAfterUrlUpdate([
-          setPage(newPagination.pageIndex + 1),
-          setPerPage(newPagination.pageSize),
-        ]);
+        void setPage(newPagination.pageIndex + 1);
+        void setPerPage(newPagination.pageSize);
       } else {
-        void refreshAfterUrlUpdate([
-          setPage(updaterOrValue.pageIndex + 1),
-          setPerPage(updaterOrValue.pageSize),
-        ]);
+        void setPage(updaterOrValue.pageIndex + 1);
+        void setPerPage(updaterOrValue.pageSize);
       }
     },
-    [pagination, refreshAfterUrlUpdate, setPage, setPerPage]
+    [pagination, setPage, setPerPage]
   );
 
   const columnIds = React.useMemo(() => {
@@ -194,16 +166,12 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     (updaterOrValue: Updater<SortingState>) => {
       if (typeof updaterOrValue === "function") {
         const newSorting = updaterOrValue(sorting);
-        void refreshAfterUrlUpdate(
-          setSorting(newSorting as ExtendedColumnSort<TData>[])
-        );
+        setSorting(newSorting as ExtendedColumnSort<TData>[]);
       } else {
-        void refreshAfterUrlUpdate(
-          setSorting(updaterOrValue as ExtendedColumnSort<TData>[])
-        );
+        setSorting(updaterOrValue as ExtendedColumnSort<TData>[]);
       }
     },
-    [refreshAfterUrlUpdate, sorting, setSorting]
+    [sorting, setSorting]
   );
 
   const filterableColumns = React.useMemo(() => {
@@ -238,7 +206,8 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
 
   const debouncedSetFilterValues = useDebouncedCallback(
     (values: typeof filterValues) => {
-      void refreshAfterUrlUpdate([setPage(1), setFilterValues(values)]);
+      void setPage(1);
+      void setFilterValues(values);
     },
     debounceMs
   );
@@ -249,16 +218,11 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     return Object.entries(filterValues).reduce<ColumnFiltersState>(
       (filters, [key, value]) => {
         if (value !== null) {
-          const column = filterableColumns.find(
-            (column) => getColumnId(column) === key
-          );
-          const processedValue = column?.meta?.options
-            ? Array.isArray(value)
-              ? value
-              : value.split(ARRAY_SEPARATOR).filter(Boolean)
-            : Array.isArray(value)
-              ? value.join(ARRAY_SEPARATOR)
-              : value;
+          const processedValue = Array.isArray(value)
+            ? value
+            : typeof value === "string" && /[^a-zA-Z0-9]/.test(value)
+              ? value.split(/[^a-zA-Z0-9]+/).filter(Boolean)
+              : [value];
 
           filters.push({
             id: key,
@@ -287,24 +251,12 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
         const filterUpdates = next.reduce<
           Record<string, string | string[] | null>
         >((acc, filter) => {
-          const column = filterableColumns.find(
-            (column) => getColumnId(column) === filter.id
-          );
-
-          if (column) {
-            if (column.meta?.options) {
-              acc[filter.id] = Array.isArray(filter.value)
-                ? (filter.value as string[])
-                : filter.value
-                  ? [String(filter.value)]
-                  : null;
-            } else {
-              acc[filter.id] = Array.isArray(filter.value)
-                ? filter.value.join(ARRAY_SEPARATOR)
-                : filter.value
-                  ? String(filter.value)
-                  : null;
-            }
+          if (
+            filterableColumns.find(
+              (column) => getColumnId(column) === filter.id
+            )
+          ) {
+            acc[filter.id] = filter.value as string | string[];
           }
           return acc;
         }, {});

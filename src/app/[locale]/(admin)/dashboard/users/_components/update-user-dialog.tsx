@@ -4,17 +4,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -32,19 +32,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Prisma, User } from "@/generated/prisma/client";
+import type { User } from "@/generated/prisma/client";
 
-import { updateUser } from "../lib/actions";
-import { type UpdateUserSchema, updateUserSchema } from "../lib/validations";
+import { useUpdateUserMutation } from "../_hooks/mutations";
+import { type UpdateUserSchema, updateUserSchema } from "../_lib/validations";
 
-interface UpdateUserSheetProps extends React.ComponentPropsWithRef<
-  typeof Sheet
+interface UpdateUserDialogProps extends React.ComponentPropsWithRef<
+  typeof Dialog
 > {
   user: User | null;
 }
 
-export function UpdateUserSheet({ user, ...props }: UpdateUserSheetProps) {
-  const [isPending, startTransition] = React.useTransition();
+export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
+  const { mutateAsync: updateUser, isPending } = useUpdateUserMutation();
 
   const form = useForm<UpdateUserSchema>({
     resolver: zodResolver(updateUserSchema),
@@ -66,34 +66,28 @@ export function UpdateUserSheet({ user, ...props }: UpdateUserSheetProps) {
   }, [user, form]);
 
   function onSubmit(input: UpdateUserSchema) {
-    startTransition(async () => {
-      if (!user) return;
+    if (!user) return;
 
-      const { error } = await updateUser({
-        ...input,
-        id: user.id,
-      });
-
-      if (error) {
-        toast.error(error);
-        return;
+    updateUser({
+      ...input,
+      id: user.id,
+    }).then((res) => {
+      if (!res.error) {
+        form.reset(input);
+        props.onOpenChange?.(false);
       }
-
-      form.reset(input);
-      props.onOpenChange?.(false);
-      toast.success("User updated");
     });
   }
 
   return (
-    <Sheet {...props}>
-      <SheetContent className="flex flex-col gap-6 sm:max-w-md">
-        <SheetHeader className="text-left">
-          <SheetTitle>Update user</SheetTitle>
-          <SheetDescription>
-            Update the user details and save the changes
-          </SheetDescription>
-        </SheetHeader>
+    <Dialog {...props}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Update User</DialogTitle>
+          <DialogDescription>
+            Update the user details and save the changes.
+          </DialogDescription>
+        </DialogHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -165,12 +159,12 @@ export function UpdateUserSheet({ user, ...props }: UpdateUserSheetProps) {
               )}
             />
 
-            <SheetFooter className="gap-2 pt-2 sm:space-x-0">
-              <SheetClose asChild>
+            <DialogFooter className="gap-2 pt-2 sm:space-x-0">
+              <DialogClose asChild>
                 <Button type="button" variant="outline">
                   Cancel
                 </Button>
-              </SheetClose>
+              </DialogClose>
               <Button disabled={isPending}>
                 {isPending && (
                   <Loader
@@ -178,12 +172,12 @@ export function UpdateUserSheet({ user, ...props }: UpdateUserSheetProps) {
                     aria-hidden="true"
                   />
                 )}
-                Save
+                Save Changes
               </Button>
-            </SheetFooter>
+            </DialogFooter>
           </form>
         </Form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

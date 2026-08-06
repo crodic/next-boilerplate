@@ -42,7 +42,33 @@ export async function deleteUsers(input: { ids: string[] }) {
     return { error: (err as Error).message };
   }
 }
+export async function updateUsers(input: {
+  ids: string[];
+  role?: string;
+  banned?: boolean;
+}) {
+  try {
+    const data: any = {};
+    if (input.role !== undefined) data.role = input.role;
+    if (input.banned !== undefined) data.banned = input.banned;
 
+    if (Object.keys(data).length > 0) {
+      await prisma.user.updateMany({
+        where: {
+          id: {
+            in: input.ids,
+          },
+        },
+        data,
+      });
+    }
+
+    revalidatePath("/dashboard/users");
+    return { error: null };
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
+}
 export async function fetchUsersAction(input: GetUsersSchema) {
   const session = await auth.api.getSession({
     headers: await headers(),

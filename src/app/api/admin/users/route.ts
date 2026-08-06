@@ -5,8 +5,8 @@ import {
   getUserRoleCounts,
   getUserStatusCounts,
   getUsers,
-} from "@/app/[locale]/(admin)/dashboard/users/lib/queries";
-import { searchParamsCache } from "@/app/[locale]/(admin)/dashboard/users/lib/validations";
+} from "@/app/[locale]/(admin)/dashboard/users/_lib/queries";
+import { searchParamsCache } from "@/app/[locale]/(admin)/dashboard/users/_lib/validations";
 
 export async function GET(req: Request) {
   try {

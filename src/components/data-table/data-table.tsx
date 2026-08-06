@@ -1,6 +1,6 @@
 /* eslint-disable */
 // @ts-nocheck
-import { flexRender, type Table as TanstackTable } from "@tanstack/react-table";
+import { flexRender, type Table as TanstackTable, type Row } from "@tanstack/react-table";
 import type * as React from "react";
 
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
@@ -18,11 +18,15 @@ import { cn } from "@/lib/utils";
 interface DataTableProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
   actionBar?: React.ReactNode;
+  onRowClick?: (row: Row<TData>) => void;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData>({
   table,
   actionBar,
+  onRowClick,
+  isLoading,
   children,
   className,
   ...props
@@ -33,7 +37,12 @@ export function DataTable<TData>({
       {...props}
     >
       {children}
-      <div className="overflow-hidden rounded-md border">
+      <div className="relative overflow-hidden rounded-md border">
+        {isLoading && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/50 backdrop-blur-sm transition-all duration-200">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-r-transparent" />
+          </div>
+        )}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -63,6 +72,8 @@ export function DataTable<TData>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => onRowClick?.(row)}
+                  className={cn(onRowClick && "cursor-pointer hover:bg-muted/50")}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell

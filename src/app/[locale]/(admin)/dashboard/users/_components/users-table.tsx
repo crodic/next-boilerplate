@@ -2,18 +2,22 @@
 
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useDataUsers } from "../_hooks/queries";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { useDataTable } from "@/hooks/use-data-table";
 import type { User } from "@/generated/prisma/client";
 import type { DataTableRowAction, QueryKeys } from "@/types/data-table";
 
-import { getUsersTableColumns } from "./users-table-columns";
+import {
+  type UsersTableActionVariant,
+  getUsersTableColumns,
+} from "./users-table-columns";
 import { UsersTableToolbarActions } from "./users-table-toolbar-actions";
-import { UpdateUserSheet } from "./update-user-sheet";
+import { UsersTableActionBar } from "./users-table-action-bar";
+import { UpdateUserDialog } from "./update-user-dialog";
 import { DeleteUsersDialog } from "./delete-users-dialog";
+import { UserDetailDialog } from "./user-detail-dialog";
 
 interface UsersTableProps {
   queryKeys?: Partial<QueryKeys>;
@@ -23,23 +27,16 @@ export function UsersTable({ queryKeys }: UsersTableProps) {
   const searchParams = useSearchParams();
   const searchParamsString = searchParams.toString();
 
-  const { data: queryData, isPending } = useQuery({
-    queryKey: ["admin-users", searchParamsString],
-    queryFn: async () => {
-      const res = await fetch(`/api/admin/users?${searchParamsString}`);
-      if (!res.ok) throw new Error("Failed to fetch users");
-      return res.json() as Promise<{
-        data: User[];
-        pageCount: number;
-        roleCounts: Record<string, number>;
-        statusCounts: Record<string, number>;
-      }>;
-    },
-    placeholderData: keepPreviousData,
-  });
+  const {
+    data: queryData,
+    isPending,
+    isFetching,
+  } = useDataUsers(searchParamsString);
 
-  const [rowAction, setRowAction] =
-    React.useState<DataTableRowAction<User> | null>(null);
+  const [rowAction, setRowAction] = React.useState<DataTableRowAction<
+    User,
+    UsersTableActionVariant
+  > | null>(null);
 
   const columns = React.useMemo(
     () =>
@@ -66,26 +63,28 @@ export function UsersTable({ queryKeys }: UsersTableProps) {
     clearOnDefault: true,
   });
 
-  if (isPending && !queryData) {
-    return (
-      <DataTableSkeleton
-        columnCount={5}
-        filterCount={3}
-        cellWidths={["10rem", "40rem", "12rem", "12rem", "8rem"]}
-        shrinkZero
-      />
-    );
-  }
-
   return (
-    <>
-      <DataTable table={table}>
+    <div className="space-y-4">
+      <DataTable
+        table={table}
+        aria-busy={isPending || queryData === undefined}
+        isLoading={isPending || isFetching}
+        onRowClick={(row) =>
+          setRowAction({ row: row as any, variant: "detail" })
+        }
+        actionBar={<UsersTableActionBar table={table} />}
+      >
         <DataTableToolbar table={table}>
           <UsersTableToolbarActions table={table} />
         </DataTableToolbar>
       </DataTable>
-      <UpdateUserSheet
+      <UpdateUserDialog
         open={rowAction?.variant === "update"}
+        onOpenChange={() => setRowAction(null)}
+        user={rowAction?.row.original ?? null}
+      />
+      <UserDetailDialog
+        open={rowAction?.variant === "detail"}
         onOpenChange={() => setRowAction(null)}
         user={rowAction?.row.original ?? null}
       />
@@ -96,6 +95,6 @@ export function UsersTable({ queryKeys }: UsersTableProps) {
         showTrigger={false}
         onSuccess={() => rowAction?.row.toggleSelected(false)}
       />
-    </>
+    </div>
   );
 }

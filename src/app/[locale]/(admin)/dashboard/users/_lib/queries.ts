@@ -4,8 +4,6 @@ import type { GetUsersSchema } from "./validations";
 
 export async function getUsers(input: GetUsersSchema) {
   try {
-    const skip = (input.page - 1) * input.perPage;
-
     const where: Prisma.UserWhereInput = {
       ...(input.name
         ? { name: { contains: input.name, mode: "insensitive" } }
@@ -38,18 +36,18 @@ export async function getUsers(input: GetUsersSchema) {
           }))
         : [{ createdAt: "desc" }];
 
-    const [data, total] = await Promise.all([
-      prisma.user.findMany({
+    const [data, meta] = await prisma.user
+      .paginate({
         where,
         orderBy,
-        skip,
-        take: input.perPage,
-      }),
-      prisma.user.count({ where }),
-    ]);
+      })
+      .withPages({
+        limit: input.perPage,
+        page: input.page,
+        includePageCount: true,
+      });
 
-    const pageCount = Math.ceil(total / input.perPage);
-    return { data, pageCount };
+    return { data, pageCount: meta.pageCount };
   } catch (err) {
     console.error(err);
     return { data: [], pageCount: 0 };

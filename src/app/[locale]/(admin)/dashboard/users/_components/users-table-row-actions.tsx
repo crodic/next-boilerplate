@@ -1,0 +1,112 @@
+"use client";
+
+import { Edit2, Trash2, Ban } from "lucide-react";
+import * as React from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import type { User } from "@/generated/prisma/client";
+import type { DataTableRowAction } from "@/types/data-table";
+
+import { updateUser } from "../_lib/actions";
+import type { UsersTableActionVariant } from "./users-table-columns";
+
+interface UsersTableRowActionsProps {
+  row: { original: User };
+  setRowAction: React.Dispatch<
+    React.SetStateAction<DataTableRowAction<
+      User,
+      UsersTableActionVariant
+    > | null>
+  >;
+}
+
+export function UsersTableRowActions({
+  row,
+  setRowAction,
+}: UsersTableRowActionsProps) {
+  const [isUpdatePending, startUpdateTransition] = React.useTransition();
+
+  return (
+    <div className="flex items-center justify-end gap-1">
+      <TooltipProvider delayDuration={150}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 transition-transform hover:scale-110"
+              onClick={() =>
+                setRowAction({ row: row as any, variant: "update" })
+              }
+            >
+              <Edit2 className="size-4 text-blue-500" aria-hidden="true" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Edit Details</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={isUpdatePending}
+              className="size-8 transition-transform hover:scale-110"
+              onClick={() => {
+                startUpdateTransition(() => {
+                  toast.promise(
+                    updateUser({
+                      id: row.original.id,
+                      banned: !row.original.banned,
+                    }),
+                    {
+                      loading: row.original.banned
+                        ? "Unbanning..."
+                        : "Banning...",
+                      success: row.original.banned
+                        ? "User unbanned"
+                        : "User banned",
+                      error: (err) => (err as Error).message,
+                    }
+                  );
+                });
+              }}
+            >
+              <Ban
+                className={`size-4 ${
+                  row.original.banned ? "text-green-500" : "text-orange-500"
+                }`}
+                aria-hidden="true"
+              />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {row.original.banned ? "Unban User" : "Ban User"}
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 transition-transform hover:scale-110"
+              onClick={() =>
+                setRowAction({ row: row as any, variant: "delete" })
+              }
+            >
+              <Trash2 className="text-destructive size-4" aria-hidden="true" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Delete User</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+  );
+}
