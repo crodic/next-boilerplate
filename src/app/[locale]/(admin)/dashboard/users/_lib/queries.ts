@@ -1,40 +1,18 @@
 import prisma from "@/lib/prisma";
 import type { Prisma } from "@/generated/prisma/client";
 import type { GetUsersSchema } from "./validations";
+import { PrismaQueryBuilder } from "@/lib/prisma-query-builder";
 
 export async function getUsers(input: GetUsersSchema) {
   try {
-    const where: Prisma.UserWhereInput = {
-      ...(input.name
-        ? { name: { contains: input.name, mode: "insensitive" } }
-        : {}),
-      ...(input.email
-        ? { email: { contains: input.email, mode: "insensitive" } }
-        : {}),
-      ...(input.role.length > 0 ? { role: { in: input.role } } : {}),
-      ...(input.banned.length === 1
-        ? {
-            banned: input.banned[0] === "banned" ? true : { not: true },
-          }
-        : {}),
-    };
-
-    if (input.createdAt.length > 0) {
-      where.createdAt = {};
-      if (input.createdAt[0]) {
-        where.createdAt.gte = new Date(input.createdAt[0]);
-      }
-      if (input.createdAt[1]) {
-        where.createdAt.lte = new Date(input.createdAt[1]);
-      }
-    }
-
-    const orderBy =
-      input.sort.length > 0
-        ? input.sort.map((item) => ({
-            [item.id]: item.desc ? "desc" : "asc",
-          }))
-        : [{ createdAt: "desc" }];
+    const { where, orderBy } = new PrismaQueryBuilder<Prisma.UserWhereInput>()
+      .contains("name", input.name)
+      .contains("email", input.email)
+      .in("role", input.role)
+      .boolean("banned", input.banned, "banned")
+      .dateRange("createdAt", input.createdAt)
+      .sort(input.sort, [{ createdAt: "desc" }])
+      .build();
 
     const [data, meta] = await prisma.user
       .paginate({
