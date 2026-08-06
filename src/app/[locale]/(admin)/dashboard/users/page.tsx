@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { headers } from "next/headers";
 import {
@@ -8,22 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { auth } from "@/lib/auth";
 
 import { UsersTable } from "./components/users-table";
-import {
-  getUserRoleCounts,
-  getUserStatusCounts,
-  getUsers,
-} from "./lib/queries";
-import { searchParamsCache } from "./lib/validations";
-
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 interface UsersPageProps {
   params: Promise<{ locale: string }>;
-  searchParams: SearchParams;
 }
 
 export default async function DashboardPage(props: UsersPageProps) {
@@ -54,28 +43,9 @@ export default async function DashboardPage(props: UsersPageProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UsersTableWrapper {...props} />
+          <UsersTable />
         </CardContent>
       </Card>
     </div>
-  );
-}
-
-async function UsersTableWrapper(props: UsersPageProps) {
-  const searchParams = await props.searchParams;
-  const search = searchParamsCache.parse(searchParams);
-
-  const [users, roleCounts, statusCounts] = await Promise.all([
-    getUsers(search),
-    getUserRoleCounts(),
-    getUserStatusCounts(),
-  ]);
-
-  return (
-    <UsersTable
-      data={users}
-      roleCounts={roleCounts}
-      statusCounts={statusCounts}
-    />
   );
 }

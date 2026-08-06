@@ -1,8 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { useDataTable } from "@/hooks/use-data-table";
 import type { User } from "@/generated/prisma/client";
 import type { DataTableRowAction, QueryKeys } from "@/types/data-table";
@@ -13,37 +16,45 @@ import { UpdateUserSheet } from "./update-user-sheet";
 import { DeleteUsersDialog } from "./delete-users-dialog";
 
 interface UsersTableProps {
-  data: { data: User[]; pageCount: number };
-  roleCounts: Record<string, number>;
-  statusCounts: Record<string, number>;
   queryKeys?: Partial<QueryKeys>;
 }
 
-export function UsersTable({
-  data,
-  roleCounts,
-  statusCounts,
-  queryKeys,
-}: UsersTableProps) {
+export function UsersTable({ queryKeys }: UsersTableProps) {
+  const searchParams = useSearchParams();
+  const searchParamsString = searchParams.toString();
+
+  const { data: queryData, isPending } = useQuery({
+    queryKey: ["admin-users", searchParamsString],
+    queryFn: async () => {
+      const res = await fetch(`/api/admin/users?${searchParamsString}`);
+      if (!res.ok) throw new Error("Failed to fetch users");
+      return res.json() as Promise<{
+        data: User[];
+        pageCount: number;
+        roleCounts: Record<string, number>;
+        statusCounts: Record<string, number>;
+      }>;
+    },
+    placeholderData: keepPreviousData,
+  });
+
   const [rowAction, setRowAction] =
     React.useState<DataTableRowAction<User> | null>(null);
 
   const columns = React.useMemo(
     () =>
       getUsersTableColumns({
-        roleCounts,
-        statusCounts,
+        roleCounts: queryData?.roleCounts ?? {},
+        statusCounts: queryData?.statusCounts ?? {},
         setRowAction,
       }),
-    [roleCounts, statusCounts]
+    [queryData?.roleCounts, queryData?.statusCounts]
   );
 
-  const [isPending, startTransition] = React.useTransition();
-
   const { table } = useDataTable({
-    data: data.data,
+    data: queryData?.data ?? [],
     columns,
-    pageCount: data.pageCount,
+    pageCount: queryData?.pageCount ?? -1,
     enableAdvancedFilter: false,
     initialState: {
       sorting: [{ id: "createdAt", desc: true }],
@@ -53,8 +64,18 @@ export function UsersTable({
     getRowId: (originalRow) => originalRow.id,
     shallow: false,
     clearOnDefault: true,
-    startTransition,
   });
+
+  if (isPending && !queryData) {
+    return (
+      <DataTableSkeleton
+        columnCount={5}
+        filterCount={3}
+        cellWidths={["10rem", "40rem", "12rem", "12rem", "8rem"]}
+        shrinkZero
+      />
+    );
+  }
 
   return (
     <>
