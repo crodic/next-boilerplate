@@ -34,10 +34,10 @@ export async function GET(req: Request) {
       roleCounts,
       statusCounts,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in GET /api/admin/users:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: error?.message || "Internal Server Error" },
       { status: 500 }
     );
   }

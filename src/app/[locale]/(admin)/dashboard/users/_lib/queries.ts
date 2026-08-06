@@ -48,9 +48,9 @@ export async function getUsers(input: GetUsersSchema) {
       });
 
     return { data, pageCount: meta.pageCount };
-  } catch (err) {
-    console.error(err);
-    return { data: [], pageCount: 0 };
+  } catch (err: any) {
+    console.error("Prisma error in getUsers:", err);
+    throw new Error(err?.message || "Failed to get users");
   }
 }
 

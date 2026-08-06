@@ -32,7 +32,15 @@ export const updateUserSchema = z.object({
   banned: z.boolean().optional(),
 });
 
+export const createUserSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  role: z.enum(["user", "admin"]),
+});
+
 export type GetUsersSchema = Awaited<
   ReturnType<typeof searchParamsCache.parse>
 >;
 export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
+export type CreateUserSchema = z.infer<typeof createUserSchema>;

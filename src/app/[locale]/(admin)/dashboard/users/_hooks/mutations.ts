@@ -102,3 +102,39 @@ export function useDeleteUsersMutation(
     ...options,
   });
 }
+
+import { authClient } from "@/lib/auth-client";
+
+type CreateUserVariables = Parameters<typeof authClient.admin.createUser>[0];
+type CreateUserResponse = Awaited<
+  ReturnType<typeof authClient.admin.createUser>
+>;
+
+export function useCreateUserMutation(
+  options?: Omit<
+    UseMutationOptions<CreateUserResponse, Error, CreateUserVariables>,
+    "mutationFn"
+  >
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (variables) => authClient.admin.createUser(variables),
+    onSuccess: (...args) => {
+      const [res] = args;
+      if (res.error) {
+        toast.error(res.error.message || "Failed to create user");
+        return;
+      }
+      toast.success("User created successfully");
+      queryClient.invalidateQueries({
+        queryKey: generateQueryKeys("admin-users"),
+      });
+    },
+    onError: (...args) => {
+      const [error] = args;
+      toast.error(error.message || "Failed to create user");
+    },
+    ...options,
+  });
+}
