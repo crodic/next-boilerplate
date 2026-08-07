@@ -30,6 +30,8 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 
 import { useDeleteUsersMutation } from "../_hooks/mutations";
 
+import { useTranslations } from "next-intl";
+
 interface DeleteUsersDialogProps extends React.ComponentPropsWithoutRef<
   typeof Dialog
 > {
@@ -44,6 +46,7 @@ export function DeleteUsersDialog({
   onSuccess,
   ...props
 }: DeleteUsersDialogProps) {
+  const t = useTranslations("Users");
   const { mutateAsync: deleteUsers, isPending: isDeletePending } =
     useDeleteUsersMutation();
   const isDesktop = useMediaQuery("(min-width: 640px)");
@@ -66,22 +69,20 @@ export function DeleteUsersDialog({
           <DialogTrigger asChild>
             <Button variant="outline">
               <Trash className="mr-2 size-4" aria-hidden="true" />
-              Delete ({users.length})
+              {t("actions.deleteSelected", { count: users.length })}
             </Button>
           </DialogTrigger>
         ) : null}
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogTitle>{t("dialogs.delete.title")}</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. This will permanently delete your{" "}
-              <span className="font-medium">{users.length}</span>
-              {users.length === 1 ? " user" : " users"} from the database.
+              {t("dialogs.delete.description")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:space-x-0">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline">{t("actions.cancel")}</Button>
             </DialogClose>
             <Button
               aria-label="Delete selected rows"
@@ -95,7 +96,7 @@ export function DeleteUsersDialog({
                   aria-hidden="true"
                 />
               )}
-              Delete
+              {t("actions.delete")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -109,22 +110,20 @@ export function DeleteUsersDialog({
         <DrawerTrigger asChild>
           <Button variant="outline">
             <Trash className="mr-2 size-4" aria-hidden="true" />
-            Delete ({users.length})
+            {t("actions.deleteSelected", { count: users.length })}
           </Button>
         </DrawerTrigger>
       ) : null}
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+          <DrawerTitle>{t("dialogs.delete.title")}</DrawerTitle>
           <DrawerDescription>
-            This action cannot be undone. This will permanently delete your{" "}
-            <span className="font-medium">{users.length}</span>
-            {users.length === 1 ? " user" : " users"} from the database.
+            {t("dialogs.delete.description")}
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter className="gap-2 sm:space-x-0">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">{t("actions.cancel")}</Button>
           </DrawerClose>
           <Button
             aria-label="Delete selected rows"
@@ -135,7 +134,7 @@ export function DeleteUsersDialog({
             {isDeletePending && (
               <Loader className="mr-2 size-4 animate-spin" aria-hidden="true" />
             )}
-            Delete
+            {t("actions.delete")}
           </Button>
         </DrawerFooter>
       </DrawerContent>

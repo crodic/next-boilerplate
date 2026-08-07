@@ -37,6 +37,8 @@ import type { User } from "@/generated/prisma/client";
 import { useUpdateUserMutation } from "../_hooks/mutations";
 import { type UpdateUserSchema, updateUserSchema } from "../_lib/validations";
 
+import { useTranslations } from "next-intl";
+
 interface UpdateUserDialogProps extends React.ComponentPropsWithRef<
   typeof Dialog
 > {
@@ -44,6 +46,7 @@ interface UpdateUserDialogProps extends React.ComponentPropsWithRef<
 }
 
 export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
+  const t = useTranslations("Users");
   const { mutateAsync: updateUser, isPending } = useUpdateUserMutation();
 
   const form = useForm<UpdateUserSchema>({
@@ -83,9 +86,9 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
     <Dialog {...props}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Update User</DialogTitle>
+          <DialogTitle>{t("dialogs.update.title")}</DialogTitle>
           <DialogDescription>
-            Update the user details and save the changes.
+            {t("dialogs.update.description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -98,9 +101,12 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t("fields.name")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input
+                      placeholder={t("fields.namePlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -111,20 +117,24 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
               name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>{t("fields.role")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="capitalize">
-                        <SelectValue placeholder="Select a role" />
+                      <SelectTrigger className="w-full capitalize">
+                        <SelectValue placeholder={t("fields.selectRole")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="user">User</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="user">
+                          {t("fields.roleUser")}
+                        </SelectItem>
+                        <SelectItem value="admin">
+                          {t("fields.roleAdmin")}
+                        </SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -137,20 +147,24 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
               name="banned"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Status</FormLabel>
+                  <FormLabel>{t("fields.status")}</FormLabel>
                   <Select
                     onValueChange={(val) => field.onChange(val === "banned")}
                     defaultValue={field.value ? "banned" : "active"}
                   >
                     <FormControl>
                       <SelectTrigger className="capitalize">
-                        <SelectValue placeholder="Select a status" />
+                        <SelectValue placeholder={t("fields.status")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="banned">Banned</SelectItem>
+                        <SelectItem value="active">
+                          {t("fields.active")}
+                        </SelectItem>
+                        <SelectItem value="banned">
+                          {t("fields.banned")}
+                        </SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -162,7 +176,7 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
             <DialogFooter className="gap-2 pt-2 sm:space-x-0">
               <DialogClose asChild>
                 <Button type="button" variant="outline">
-                  Cancel
+                  {t("actions.cancel")}
                 </Button>
               </DialogClose>
               <Button disabled={isPending}>
@@ -172,7 +186,7 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
                     aria-hidden="true"
                   />
                 )}
-                Save Changes
+                {t("actions.update")}
               </Button>
             </DialogFooter>
           </form>

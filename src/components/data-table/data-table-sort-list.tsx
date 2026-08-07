@@ -174,7 +174,8 @@ export function DataTableSortList<TData>({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="font-normal"
+            size="sm"
+            className="hidden h-8 font-normal lg:flex"
             onKeyDown={onTriggerKeyDown}
             disabled={disabled}
           >

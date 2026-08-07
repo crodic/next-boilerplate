@@ -19,6 +19,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { User } from "@/generated/prisma/client";
 
+import { useTranslations } from "next-intl";
+
 interface UserDetailDialogProps extends React.ComponentPropsWithRef<
   typeof Dialog
 > {
@@ -26,6 +28,8 @@ interface UserDetailDialogProps extends React.ComponentPropsWithRef<
 }
 
 export function UserDetailDialog({ user, ...props }: UserDetailDialogProps) {
+  const t = useTranslations("Users");
+
   if (!user) return <Dialog {...props} />;
 
   const initials = user.name
@@ -42,10 +46,10 @@ export function UserDetailDialog({ user, ...props }: UserDetailDialogProps) {
       <DialogContent className="bg-background/80 overflow-hidden border-white/10 shadow-2xl backdrop-blur-xl sm:max-w-md">
         <DialogHeader className="border-b pb-4 text-left">
           <DialogTitle className="flex items-center gap-2 text-2xl font-bold">
-            User Profile
+            {t("dialogs.details.title")}
           </DialogTitle>
           <DialogDescription>
-            Detailed information and account status.
+            {t("dialogs.details.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -66,7 +70,9 @@ export function UserDetailDialog({ user, ...props }: UserDetailDialogProps) {
                   variant={user.role === "admin" ? "gradient" : "secondary"}
                 >
                   {user.role === "admin" && <Shield className="mr-1 size-3" />}
-                  {user.role?.toUpperCase() || "USER"}
+                  {user.role === "admin"
+                    ? t("fields.roleAdmin").toUpperCase()
+                    : t("fields.roleUser").toUpperCase()}
                 </Badge>
                 <Badge
                   variant={user.banned ? "destructive" : "outline"}
@@ -77,7 +83,7 @@ export function UserDetailDialog({ user, ...props }: UserDetailDialogProps) {
                   }
                 >
                   <CircleDashed className="mr-1 size-3" />
-                  {user.banned ? "Banned" : "Active"}
+                  {user.banned ? t("fields.banned") : t("fields.active")}
                 </Badge>
               </div>
             </div>
@@ -90,7 +96,7 @@ export function UserDetailDialog({ user, ...props }: UserDetailDialogProps) {
               </div>
               <div className="flex flex-col">
                 <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-                  Email
+                  {t("fields.email")}
                 </span>
                 <span className="font-medium">{user.email}</span>
               </div>
@@ -102,7 +108,7 @@ export function UserDetailDialog({ user, ...props }: UserDetailDialogProps) {
               </div>
               <div className="flex flex-col">
                 <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-                  Joined Date
+                  {t("fields.joinedAt")}
                 </span>
                 <span className="font-medium">
                   {new Date(user.createdAt).toLocaleDateString(undefined, {

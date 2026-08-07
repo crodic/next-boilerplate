@@ -4,6 +4,7 @@ import {
   type UseMutationOptions,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { updateUser, updateUsers, deleteUsers } from "../_lib/actions";
 import { generateQueryKeys } from "@/lib/utils";
 
@@ -17,6 +18,7 @@ export function useUpdateUserMutation(
   >
 ) {
   const queryClient = useQueryClient();
+  const t = useTranslations("Users");
 
   return useMutation({
     mutationFn: updateUser,
@@ -26,14 +28,14 @@ export function useUpdateUserMutation(
         toast.error(res.error);
         return;
       }
-      toast.success("User updated successfully");
+      toast.success(t("messages.updateSuccess"));
       queryClient.invalidateQueries({
         queryKey: generateQueryKeys("admin-users"),
       });
     },
     onError: (...args) => {
       const [error] = args;
-      toast.error(error.message || "Failed to update user");
+      toast.error(error.message || t("messages.updateError"));
     },
     ...options,
   });
@@ -49,6 +51,7 @@ export function useUpdateUsersMutation(
   >
 ) {
   const queryClient = useQueryClient();
+  const t = useTranslations("Users");
 
   return useMutation({
     mutationFn: updateUsers,
@@ -58,14 +61,14 @@ export function useUpdateUsersMutation(
         toast.error(res.error);
         return;
       }
-      toast.success("Users updated successfully");
+      toast.success(t("messages.updateSuccess"));
       queryClient.invalidateQueries({
         queryKey: generateQueryKeys("admin-users"),
       });
     },
     onError: (...args) => {
       const [error] = args;
-      toast.error(error.message || "Failed to update users");
+      toast.error(error.message || t("messages.updateError"));
     },
     ...options,
   });
@@ -81,6 +84,7 @@ export function useDeleteUsersMutation(
   >
 ) {
   const queryClient = useQueryClient();
+  const t = useTranslations("Users");
 
   return useMutation({
     mutationFn: deleteUsers,
@@ -90,14 +94,14 @@ export function useDeleteUsersMutation(
         toast.error(res.error);
         return;
       }
-      toast.success("Users deleted successfully");
+      toast.success(t("messages.deleteSuccess"));
       queryClient.invalidateQueries({
         queryKey: generateQueryKeys("admin-users"),
       });
     },
     onError: (...args) => {
       const [error] = args;
-      toast.error(error.message || "Failed to delete users");
+      toast.error(error.message || t("messages.deleteError"));
     },
     ...options,
   });
@@ -117,23 +121,24 @@ export function useCreateUserMutation(
   >
 ) {
   const queryClient = useQueryClient();
+  const t = useTranslations("Users");
 
   return useMutation({
     mutationFn: (variables) => authClient.admin.createUser(variables),
     onSuccess: (...args) => {
       const [res] = args;
       if (res.error) {
-        toast.error(res.error.message || "Failed to create user");
+        toast.error(res.error.message || t("messages.createError"));
         return;
       }
-      toast.success("User created successfully");
+      toast.success(t("messages.createSuccess"));
       queryClient.invalidateQueries({
         queryKey: generateQueryKeys("admin-users"),
       });
     },
     onError: (...args) => {
       const [error] = args;
-      toast.error(error.message || "Failed to create user");
+      toast.error(error.message || t("messages.createError"));
     },
     ...options,
   });

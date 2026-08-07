@@ -23,7 +23,10 @@ interface UsersTableProps {
   queryKeys?: Partial<QueryKeys>;
 }
 
+import { useTranslations } from "next-intl";
+
 export function UsersTable({ queryKeys }: UsersTableProps) {
+  const t = useTranslations("Users");
   const searchParams = useSearchParams();
   const searchParamsString = searchParams.toString();
 
@@ -44,8 +47,9 @@ export function UsersTable({ queryKeys }: UsersTableProps) {
         roleCounts: queryData?.roleCounts ?? {},
         statusCounts: queryData?.statusCounts ?? {},
         setRowAction,
+        t,
       }),
-    [queryData?.roleCounts, queryData?.statusCounts]
+    [queryData?.roleCounts, queryData?.statusCounts, t]
   );
 
   const { table } = useDataTable({

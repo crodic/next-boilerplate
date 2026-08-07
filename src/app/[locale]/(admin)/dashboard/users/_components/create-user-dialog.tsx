@@ -36,7 +36,10 @@ import {
 import { useCreateUserMutation } from "../_hooks/mutations";
 import { type CreateUserSchema, createUserSchema } from "../_lib/validations";
 
+import { useTranslations } from "next-intl";
+
 export function CreateUserDialog() {
+  const t = useTranslations("Users");
   const [open, setOpen] = React.useState(false);
   const { mutateAsync: createUser, isPending } = useCreateUserMutation();
 
@@ -64,14 +67,14 @@ export function CreateUserDialog() {
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 size-4" />
-          Create User
+          {t("actions.create")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create User</DialogTitle>
+          <DialogTitle>{t("dialogs.create.title")}</DialogTitle>
           <DialogDescription>
-            Add a new user to the system. Fill out their details below.
+            {t("dialogs.create.description")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -84,9 +87,12 @@ export function CreateUserDialog() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t("fields.name")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input
+                      placeholder={t("fields.namePlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -97,11 +103,11 @@ export function CreateUserDialog() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t("fields.email")}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="john.doe@example.com"
+                      placeholder={t("fields.emailPlaceholder")}
                       {...field}
                     />
                   </FormControl>
@@ -114,9 +120,13 @@ export function CreateUserDialog() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t("fields.password")}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
+                    <Input
+                      type="password"
+                      placeholder={t("fields.passwordPlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -127,20 +137,24 @@ export function CreateUserDialog() {
               name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>{t("fields.role")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="capitalize">
-                        <SelectValue placeholder="Select a role" />
+                      <SelectTrigger className="w-full capitalize">
+                        <SelectValue placeholder={t("fields.selectRole")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="user">User</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="user">
+                          {t("fields.roleUser")}
+                        </SelectItem>
+                        <SelectItem value="admin">
+                          {t("fields.roleAdmin")}
+                        </SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -152,7 +166,7 @@ export function CreateUserDialog() {
             <DialogFooter className="gap-2 pt-2 sm:space-x-0">
               <DialogClose asChild>
                 <Button type="button" variant="outline">
-                  Cancel
+                  {t("actions.cancel")}
                 </Button>
               </DialogClose>
               <Button disabled={isPending}>
@@ -162,7 +176,7 @@ export function CreateUserDialog() {
                     aria-hidden="true"
                   />
                 )}
-                Create
+                {t("actions.create")}
               </Button>
             </DialogFooter>
           </form>

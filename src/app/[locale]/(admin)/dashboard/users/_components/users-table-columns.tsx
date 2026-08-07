@@ -28,12 +28,14 @@ interface GetUsersTableColumnsProps {
       UsersTableActionVariant
     > | null>
   >;
+  t: (key: string) => string;
 }
 
 export function getUsersTableColumns({
   roleCounts,
   statusCounts,
   setRowAction,
+  t,
 }: GetUsersTableColumnsProps): ColumnDef<User>[] {
   return [
     {
@@ -65,14 +67,14 @@ export function getUsersTableColumns({
       id: "name",
       accessorKey: "name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} label="Name" />
+        <DataTableColumnHeader column={column} label={t("fields.name")} />
       ),
       cell: ({ row }) => (
         <div className="min-w-32 font-medium">{row.getValue("name")}</div>
       ),
       meta: {
-        label: "Name",
-        placeholder: "Search names...",
+        label: t("fields.name"),
+        placeholder: t("fields.namePlaceholder"),
         variant: "text",
         icon: Text,
       },
@@ -82,14 +84,14 @@ export function getUsersTableColumns({
       id: "email",
       accessorKey: "email",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} label="Email" />
+        <DataTableColumnHeader column={column} label={t("fields.email")} />
       ),
       cell: ({ row }) => (
         <div className="text-muted-foreground">{row.getValue("email")}</div>
       ),
       meta: {
-        label: "Email",
-        placeholder: "Search emails...",
+        label: t("fields.email"),
+        placeholder: t("fields.emailPlaceholder"),
         variant: "text",
         icon: Text,
       },
@@ -99,7 +101,7 @@ export function getUsersTableColumns({
       id: "role",
       accessorKey: "role",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} label="Role" />
+        <DataTableColumnHeader column={column} label={t("fields.role")} />
       ),
       cell: ({ cell }) => {
         const role = cell.getValue<string | null>() || "user";
@@ -109,22 +111,24 @@ export function getUsersTableColumns({
             className="w-fit"
           >
             {role === "admin" && <Shield className="mr-1 size-3" />}
-            {role.toUpperCase()}
+            {role === "admin"
+              ? t("fields.roleAdmin").toUpperCase()
+              : t("fields.roleUser").toUpperCase()}
           </Badge>
         );
       },
       meta: {
-        label: "Role",
+        label: t("fields.role"),
         variant: "multiSelect",
         options: [
           {
-            label: "Admin",
+            label: t("fields.roleAdmin"),
             value: "admin",
             count: roleCounts["admin"] || 0,
             icon: ShieldAlert,
           },
           {
-            label: "User",
+            label: t("fields.roleUser"),
             value: "user",
             count: roleCounts["user"] || 0,
             icon: Shield,
@@ -138,7 +142,7 @@ export function getUsersTableColumns({
       id: "banned",
       accessorKey: "banned",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} label="Status" />
+        <DataTableColumnHeader column={column} label={t("fields.status")} />
       ),
       cell: ({ cell }) => {
         const isBanned = cell.getValue<boolean | null>();
@@ -154,22 +158,22 @@ export function getUsersTableColumns({
             <div
               className={`mr-1 size-1.5 rounded-full ${isBanned ? "bg-red-500" : "bg-emerald-500"}`}
             />
-            {isBanned ? "Banned" : "Active"}
+            {isBanned ? t("fields.banned") : t("fields.active")}
           </Badge>
         );
       },
       meta: {
-        label: "Status",
+        label: t("fields.status"),
         variant: "multiSelect",
         options: [
           {
-            label: "Active",
+            label: t("fields.active"),
             value: "active",
             count: statusCounts["active"] || 0,
             icon: CircleDashed,
           },
           {
-            label: "Banned",
+            label: t("fields.banned"),
             value: "banned",
             count: statusCounts["banned"] || 0,
             icon: CircleDashed,
@@ -183,7 +187,7 @@ export function getUsersTableColumns({
       id: "createdAt",
       accessorKey: "createdAt",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} label="Joined At" />
+        <DataTableColumnHeader column={column} label={t("fields.joinedAt")} />
       ),
       cell: ({ cell }) => (
         <div className="text-muted-foreground min-w-24 text-sm">
@@ -195,7 +199,7 @@ export function getUsersTableColumns({
         </div>
       ),
       meta: {
-        label: "Joined At",
+        label: t("fields.joinedAt"),
         variant: "dateRange",
         icon: CalendarIcon,
       },

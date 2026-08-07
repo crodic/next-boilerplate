@@ -50,8 +50,6 @@ export default async function LocaleLayout({
   const cookieStore = await cookies();
   const initialDir =
     (cookieStore.get("dir")?.value as "ltr" | "rtl") || undefined;
-  const initialColorKey =
-    (cookieStore.get("theme-color")?.value as any) || undefined;
   const initialCollapsible =
     (cookieStore.get("layout_collapsible")?.value as any) || undefined;
   const initialVariant =
@@ -61,7 +59,6 @@ export default async function LocaleLayout({
     <NextIntlClientProvider messages={messages}>
       <Providers
         initialDir={initialDir}
-        initialColorKey={initialColorKey}
         initialCollapsible={initialCollapsible}
         initialVariant={initialVariant}
       >

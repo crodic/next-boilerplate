@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { useThemeColor } from "@/context/theme-color-provider";
 import { useRouter, usePathname } from "@/i18n/routing";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -37,7 +36,6 @@ import { US, VN } from "country-flag-icons/react/3x2";
 const profileFormSchema = z.object({
   language: z.enum(["en", "vi"]),
   themeMode: z.enum(["light", "dark", "system"]),
-  themeColor: z.string(),
   fontFamily: z.enum(["geist", "inter", "roboto", "nunito", "playfair"]),
 });
 
@@ -49,7 +47,6 @@ export function ProfileForm() {
   const router = useRouter();
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
-  const { colorKey, setColorKey } = useThemeColor();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -61,7 +58,6 @@ export function ProfileForm() {
     defaultValues: {
       language: locale as "en" | "vi",
       themeMode: (theme as "light" | "dark" | "system") || "system",
-      themeColor: colorKey || "neutral",
       fontFamily: "geist",
     },
   });
@@ -87,8 +83,6 @@ export function ProfileForm() {
 
   const formThemeMode = form.watch("themeMode");
 
-  const formThemeColor = form.watch("themeColor");
-
   const formFontFamily = form.watch("fontFamily");
 
   function onSubmit(data: ProfileFormValues) {
@@ -100,11 +94,6 @@ export function ProfileForm() {
     // Handle theme mode change
     if (data.themeMode !== theme) {
       setTheme(data.themeMode);
-    }
-
-    // Handle theme color change
-    if (data.themeColor !== colorKey) {
-      setColorKey(data.themeColor as any);
     }
 
     // Handle font family change
@@ -211,44 +200,6 @@ export function ProfileForm() {
               </Select>
               <FieldDescription>{t("themeModeDescription")}</FieldDescription>
               <FieldError errors={[form.formState.errors.themeMode]} />
-            </FieldContent>
-          </Field>
-
-          <Field>
-            <FieldLabel>{t("themeColor")}</FieldLabel>
-            <FieldContent>
-              <Select
-                onValueChange={(val) =>
-                  form.setValue("themeColor", val as string, {
-                    shouldDirty: true,
-                  })
-                }
-                value={formThemeColor || "neutral"}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t("selectThemeColor")}>
-                    {formThemeColor
-                      ? t(`colors.${formThemeColor}` as any)
-                      : t("colors.neutral")}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="neutral">{t("colors.neutral")}</SelectItem>
-                  <SelectItem value="blue">{t("colors.blue")}</SelectItem>
-                  <SelectItem value="red">{t("colors.red")}</SelectItem>
-                  <SelectItem value="violet">{t("colors.violet")}</SelectItem>
-                  <SelectItem value="yellow">{t("colors.yellow")}</SelectItem>
-                  <SelectItem value="green">{t("colors.green")}</SelectItem>
-                  <SelectItem value="orange">{t("colors.orange")}</SelectItem>
-                  <SelectItem value="cyan">{t("colors.cyan")}</SelectItem>
-                  <SelectItem value="indigo">{t("colors.indigo")}</SelectItem>
-                  <SelectItem value="slate">{t("colors.slate")}</SelectItem>
-                  <SelectItem value="teal">{t("colors.teal")}</SelectItem>
-                  <SelectItem value="pink">{t("colors.pink")}</SelectItem>
-                </SelectContent>
-              </Select>
-              <FieldDescription>{t("themeColorDescription")}</FieldDescription>
-              <FieldError errors={[form.formState.errors.themeColor]} />
             </FieldContent>
           </Field>
 

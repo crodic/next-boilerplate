@@ -33,11 +33,14 @@ import {
   useDeleteUsersMutation,
 } from "../_hooks/mutations";
 
+import { useTranslations } from "next-intl";
+
 interface UsersTableActionBarProps {
   table: Table<User>;
 }
 
 export function UsersTableActionBar({ table }: UsersTableActionBarProps) {
+  const t = useTranslations("Users");
   const rows = table.getFilteredSelectedRowModel().rows;
   const { mutateAsync: updateUsers } = useUpdateUsersMutation();
   const { mutateAsync: deleteUsers } = useDeleteUsersMutation();
@@ -87,7 +90,7 @@ export function UsersTableActionBar({ table }: UsersTableActionBarProps) {
     <ActionBar open={rows.length > 0} onOpenChange={onOpenChange}>
       <ActionBarSelection>
         <span className="font-medium">{rows.length}</span>
-        <span>selected</span>
+        <span>{t("table.selected")}</span>
         <ActionBarSeparator />
         <ActionBarClose>
           <X />
@@ -99,15 +102,15 @@ export function UsersTableActionBar({ table }: UsersTableActionBarProps) {
           <DropdownMenuTrigger asChild>
             <ActionBarItem>
               <Shield className="size-4" />
-              Role
+              {t("fields.role")}
             </ActionBarItem>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => onUserUpdate("role", "admin")}>
-              <Shield className="mr-2 size-4" /> Admin
+              <Shield className="mr-2 size-4" /> {t("fields.roleAdmin")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => onUserUpdate("role", "user")}>
-              <ShieldOff className="mr-2 size-4" /> User
+              <ShieldOff className="mr-2 size-4" /> {t("fields.roleUser")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -116,27 +119,28 @@ export function UsersTableActionBar({ table }: UsersTableActionBarProps) {
           <DropdownMenuTrigger asChild>
             <ActionBarItem>
               <Ban className="size-4" />
-              Status
+              {t("fields.status")}
             </ActionBarItem>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => onUserUpdate("banned", false)}>
-              <CheckCircle2 className="mr-2 size-4 text-emerald-500" /> Active
+              <CheckCircle2 className="mr-2 size-4 text-emerald-500" />{" "}
+              {t("fields.active")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => onUserUpdate("banned", true)}>
-              <Ban className="mr-2 size-4 text-red-500" /> Banned
+              <Ban className="mr-2 size-4 text-red-500" /> {t("fields.banned")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
         <ActionBarItem onClick={onUserExport}>
           <Download className="size-4" />
-          Export
+          {t("actions.export")}
         </ActionBarItem>
 
         <ActionBarItem variant="destructive" onClick={onUserDelete}>
           <Trash2 className="size-4" />
-          Delete
+          {t("actions.delete")}
         </ActionBarItem>
       </ActionBarGroup>
     </ActionBar>

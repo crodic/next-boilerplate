@@ -130,18 +130,90 @@
       "somethingWentWrong": "Có lỗi xảy ra"
     },
     "colors": {
-      "neutral": "Trung tính (Mặc định)",
-      "blue": "Xanh dương",
+      "neutral": "Trắng Đen (Mặc định)",
+      "blue": "Xanh Dương",
       "red": "Đỏ",
       "violet": "Tím",
       "yellow": "Vàng",
-      "green": "Xanh lá",
+      "green": "Xanh Lá",
       "orange": "Cam",
-      "cyan": "Xanh lơ",
-      "indigo": "Chàm",
-      "slate": "Xám",
-      "teal": "Xanh mòng két",
+      "cyan": "Xanh Ngọc",
+      "indigo": "Xanh Đậm",
+      "slate": "Xám Đậm",
+      "teal": "Xanh Rêu",
       "pink": "Hồng"
+    }
+  },
+  "Users": {
+    "title": "Người Dùng",
+    "description": "Quản lý người dùng và phân quyền hệ thống.",
+    "fields": {
+      "name": "Tên",
+      "namePlaceholder": "Nguyễn Văn A",
+      "email": "Email",
+      "emailPlaceholder": "nguyenvana@example.com",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "••••••••",
+      "role": "Vai trò",
+      "selectRole": "Chọn vai trò",
+      "roleUser": "Người dùng",
+      "roleAdmin": "Quản trị viên",
+      "status": "Trạng thái",
+      "joinedAt": "Ngày tham gia",
+      "banned": "Bị khóa",
+      "active": "Hoạt động",
+      "actions": "Hành động"
+    },
+    "actions": {
+      "create": "Tạo Người Dùng",
+      "update": "Cập Nhật",
+      "delete": "Xóa",
+      "deleteSelected": "Xóa ({count}) mục",
+      "export": "Xuất Data",
+      "cancel": "Hủy",
+      "viewDetails": "Xem chi tiết",
+      "editDetails": "Chỉnh sửa chi tiết",
+      "unbanUser": "Mở khóa Người dùng",
+      "banUser": "Khóa Người dùng",
+      "deleteUser": "Xóa Người dùng"
+    },
+    "dialogs": {
+      "create": {
+        "title": "Tạo Người Dùng Mới",
+        "description": "Thêm một người dùng mới vào hệ thống. Vui lòng điền các thông tin bên dưới."
+      },
+      "update": {
+        "title": "Cập Nhật Người Dùng",
+        "description": "Cập nhật thông tin chi tiết của người dùng đang được chọn."
+      },
+      "delete": {
+        "title": "Bạn có chắc chắn không?",
+        "description": "Hành động này không thể hoàn tác. Người dùng được chọn sẽ bị xóa vĩnh viễn khỏi hệ thống."
+      },
+      "details": {
+        "title": "Chi Tiết Người Dùng",
+        "description": "Thông tin chi tiết về người dùng đang được chọn."
+      }
+    },
+    "table": {
+      "searchPlaceholder": "Tìm kiếm người dùng...",
+      "noResults": "Không tìm thấy kết quả.",
+      "selectedRows": "Đã chọn {selected} trên tổng số {total} dòng.",
+      "selected": "đã chọn",
+      "pageInfo": "Trang {current} / {total}"
+    },
+    "messages": {
+      "createSuccess": "Tạo người dùng thành công",
+      "createError": "Không thể tạo người dùng",
+      "updateSuccess": "Cập nhật người dùng thành công",
+      "updateError": "Không thể cập nhật người dùng",
+      "deleteSuccess": "Xóa người dùng thành công",
+      "deleteError": "Không thể xóa người dùng",
+      "fetchError": "Không thể tải danh sách người dùng",
+      "unbanning": "Đang mở khóa...",
+      "banning": "Đang khóa...",
+      "unbanSuccess": "Đã mở khóa người dùng",
+      "banSuccess": "Đã khóa người dùng"
     }
   }
 }

@@ -16,7 +16,6 @@ import { IconThemeSystem } from "@/assets/custom/icon-theme-system";
 import { cn } from "@/lib/utils";
 import { useDirection } from "@/context/direction-provider";
 import { type Collapsible, useLayout } from "@/context/layout-provider";
-import { useThemeColor } from "@/context/theme-color-provider";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,33 +32,16 @@ import { useSidebar } from "@/components/ui/sidebar";
 const Radio = RadioGroup.Root;
 const Item = RadioGroup.Item;
 
-const themeColorPreviews = {
-  neutral: "oklch(0.205 0 0)",
-  blue: "oklch(0.488 0.243 264.376)",
-  red: "oklch(0.577 0.245 27.325)",
-  violet: "oklch(0.541 0.281 293.009)",
-  yellow: "oklch(0.852 0.199 91.936)",
-  green: "oklch(0.648 0.2 131.684)",
-  orange: "oklch(0.646 0.222 41.116)",
-  pink: "oklch(0.586 0.253 17.585)",
-  slate: "oklch(0.446 0.043 257.281)",
-  teal: "oklch(0.6 0.118 184.704)",
-  cyan: "oklch(0.609 0.126 221.723)",
-  indigo: "oklch(0.511 0.262 276.966)",
-};
-
 export function ConfigDrawer() {
   const { setOpen } = useSidebar();
   const { resetDir } = useDirection();
   const { setTheme } = useTheme();
-  const { resetColor } = useThemeColor();
   const { resetLayout } = useLayout();
 
   const handleReset = () => {
     setOpen(true);
     resetDir();
     setTheme("system");
-    resetColor();
     resetLayout();
   };
 
@@ -85,7 +67,6 @@ export function ConfigDrawer() {
         </SheetHeader>
         <div className="space-y-6 overflow-y-auto px-4 py-4">
           <ThemeConfig />
-          <ThemeColorConfig />
           <SidebarConfig />
           <LayoutConfig />
           <DirConfig />
@@ -373,43 +354,6 @@ function DirConfig() {
       </Radio>
       <div id="direction-description" className="sr-only">
         Choose between left-to-right or right-to-left site direction
-      </div>
-    </div>
-  );
-}
-
-function ThemeColorConfig() {
-  const { colorKey, setColorKey, resetColor } = useThemeColor();
-
-  return (
-    <div>
-      <SectionTitle
-        title="Color"
-        showReset={colorKey !== "neutral"}
-        onReset={resetColor}
-      />
-      <div className="flex flex-wrap gap-2">
-        {Object.entries(themeColorPreviews).map(([key, bgColor]) => (
-          <Button
-            key={key}
-            onClick={() => setColorKey(key as keyof typeof themeColorPreviews)}
-            size="icon"
-            className={cn(
-              "relative rounded-full transition-all duration-200",
-              colorKey === key
-                ? "ring-foreground scale-110 ring-2"
-                : "opacity-80 hover:opacity-100"
-            )}
-            style={{
-              backgroundColor: bgColor,
-            }}
-            title={key}
-          >
-            {colorKey === key && (
-              <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />
-            )}
-          </Button>
-        ))}
       </div>
     </div>
   );

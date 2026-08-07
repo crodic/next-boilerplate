@@ -13,10 +13,6 @@ import { themePlugin } from "@/lib/auth/theme-plugin";
 import { multiSessionPlugin } from "@/lib/auth/multi-session-plugin";
 import { SearchProvider } from "@/context/search-provider";
 import {
-  ThemeColorProvider,
-  type ColorKey,
-} from "@/context/theme-color-provider";
-import {
   LayoutProvider,
   type Collapsible,
   type Variant,
@@ -30,7 +26,6 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export type ServerCookieProps = {
   initialDir?: DirType;
-  initialColorKey?: ColorKey;
   initialCollapsible?: Collapsible;
   initialVariant?: Variant;
 };
@@ -38,7 +33,6 @@ export type ServerCookieProps = {
 export function Providers({
   children,
   initialDir,
-  initialColorKey,
   initialCollapsible,
   initialVariant,
 }: { children: React.ReactNode } & ServerCookieProps) {
@@ -97,17 +91,15 @@ export function Providers({
             }}
           >
             <DirectionProvider initialDir={initialDir}>
-              <ThemeColorProvider initialColorKey={initialColorKey}>
-                <LayoutProvider
-                  initialCollapsible={initialCollapsible}
-                  initialVariant={initialVariant}
-                >
-                  <SearchProvider>
-                    {children}
-                    <Toaster />
-                  </SearchProvider>
-                </LayoutProvider>
-              </ThemeColorProvider>
+              <LayoutProvider
+                initialCollapsible={initialCollapsible}
+                initialVariant={initialVariant}
+              >
+                <SearchProvider>
+                  {children}
+                  <Toaster />
+                </SearchProvider>
+              </LayoutProvider>
             </DirectionProvider>
           </BetterAuthProvider>
         </TooltipProvider>

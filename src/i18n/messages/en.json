@@ -143,5 +143,77 @@
       "teal": "Teal",
       "pink": "Pink"
     }
+  },
+  "Users": {
+    "title": "Users",
+    "description": "Manage users and their permissions.",
+    "fields": {
+      "name": "Name",
+      "namePlaceholder": "John Doe",
+      "email": "Email",
+      "emailPlaceholder": "john.doe@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "role": "Role",
+      "selectRole": "Select a role",
+      "roleUser": "User",
+      "roleAdmin": "Admin",
+      "status": "Status",
+      "joinedAt": "Joined At",
+      "banned": "Banned",
+      "active": "Active",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Create User",
+      "update": "Update",
+      "delete": "Delete",
+      "deleteSelected": "Delete Selected ({count})",
+      "export": "Export",
+      "cancel": "Cancel",
+      "viewDetails": "View Details",
+      "editDetails": "Edit Details",
+      "unbanUser": "Unban User",
+      "banUser": "Ban User",
+      "deleteUser": "Delete User"
+    },
+    "dialogs": {
+      "create": {
+        "title": "Create User",
+        "description": "Add a new user to the system. Fill out their details below."
+      },
+      "update": {
+        "title": "Update User",
+        "description": "Update the details of the selected user."
+      },
+      "delete": {
+        "title": "Are you absolutely sure?",
+        "description": "This action cannot be undone. This will permanently delete the selected users from the system."
+      },
+      "details": {
+        "title": "User Details",
+        "description": "Detailed information about the selected user."
+      }
+    },
+    "table": {
+      "searchPlaceholder": "Search users...",
+      "noResults": "No results.",
+      "selectedRows": "{selected} of {total} row(s) selected.",
+      "selected": "selected",
+      "pageInfo": "Page {current} of {total}"
+    },
+    "messages": {
+      "createSuccess": "User created successfully",
+      "createError": "Failed to create user",
+      "updateSuccess": "User updated successfully",
+      "updateError": "Failed to update user",
+      "deleteSuccess": "Users deleted successfully",
+      "deleteError": "Failed to delete users",
+      "fetchError": "Failed to load users",
+      "unbanning": "Unbanning...",
+      "banning": "Banning...",
+      "unbanSuccess": "User unbanned",
+      "banSuccess": "User banned"
+    }
   }
 }

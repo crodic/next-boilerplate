@@ -16,6 +16,8 @@ import type { DataTableRowAction } from "@/types/data-table";
 import { updateUser } from "../_lib/actions";
 import type { UsersTableActionVariant } from "./users-table-columns";
 
+import { useTranslations } from "next-intl";
+
 interface UsersTableRowActionsProps {
   row: { original: User };
   setRowAction: React.Dispatch<
@@ -30,6 +32,7 @@ export function UsersTableRowActions({
   row,
   setRowAction,
 }: UsersTableRowActionsProps) {
+  const t = useTranslations("Users");
   const [isUpdatePending, startUpdateTransition] = React.useTransition();
 
   return (
@@ -41,14 +44,15 @@ export function UsersTableRowActions({
               variant="ghost"
               size="icon"
               className="size-8 transition-transform hover:scale-110"
-              onClick={() =>
-                setRowAction({ row: row as any, variant: "update" })
-              }
+              onClick={(e) => {
+                e.stopPropagation();
+                setRowAction({ row: row as any, variant: "update" });
+              }}
             >
               <Edit2 className="size-4 text-blue-500" aria-hidden="true" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Edit Details</TooltipContent>
+          <TooltipContent>{t("actions.editDetails")}</TooltipContent>
         </Tooltip>
 
         <Tooltip>
@@ -58,7 +62,8 @@ export function UsersTableRowActions({
               size="icon"
               disabled={isUpdatePending}
               className="size-8 transition-transform hover:scale-110"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 startUpdateTransition(() => {
                   toast.promise(
                     updateUser({
@@ -67,11 +72,11 @@ export function UsersTableRowActions({
                     }),
                     {
                       loading: row.original.banned
-                        ? "Unbanning..."
-                        : "Banning...",
+                        ? t("messages.unbanning")
+                        : t("messages.banning"),
                       success: row.original.banned
-                        ? "User unbanned"
-                        : "User banned",
+                        ? t("messages.unbanSuccess")
+                        : t("messages.banSuccess"),
                       error: (err) => (err as Error).message,
                     }
                   );
@@ -87,7 +92,9 @@ export function UsersTableRowActions({
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            {row.original.banned ? "Unban User" : "Ban User"}
+            {row.original.banned
+              ? t("actions.unbanUser")
+              : t("actions.banUser")}
           </TooltipContent>
         </Tooltip>
 
@@ -97,14 +104,15 @@ export function UsersTableRowActions({
               variant="ghost"
               size="icon"
               className="size-8 transition-transform hover:scale-110"
-              onClick={() =>
-                setRowAction({ row: row as any, variant: "delete" })
-              }
+              onClick={(e) => {
+                e.stopPropagation();
+                setRowAction({ row: row as any, variant: "delete" });
+              }}
             >
               <Trash2 className="text-destructive size-4" aria-hidden="true" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Delete User</TooltipContent>
+          <TooltipContent>{t("actions.deleteUser")}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </div>

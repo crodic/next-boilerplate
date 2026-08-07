@@ -8,18 +8,21 @@ import { DataTableDateFilter } from "@/components/data-table/data-table-date-fil
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableSliderFilter } from "@/components/data-table/data-table-slider-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
+import { DataTableSortList } from "@/components/data-table/data-table-sort-list";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 interface DataTableToolbarProps<TData> extends React.ComponentProps<"div"> {
   table: Table<TData>;
+  hideViewOptions?: boolean;
 }
 
 export function DataTableToolbar<TData>({
   table,
   children,
   className,
+  hideViewOptions,
   ...props
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -61,7 +64,8 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex items-center gap-2">
         {children}
-        <DataTableViewOptions table={table} align="end" />
+        <DataTableSortList table={table} />
+        {!hideViewOptions && <DataTableViewOptions table={table} align="end" />}
       </div>
     </div>
   );
