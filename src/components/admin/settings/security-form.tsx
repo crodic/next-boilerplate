@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/ui/password-input";
 import {
   Field,
   FieldLabel,
@@ -19,7 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+
 import { useAuth, useSession } from "@better-auth-ui/react";
 import { useEffect, useState, useCallback } from "react";
 import { Loader2, Monitor, Smartphone, X, LogOut } from "lucide-react";
@@ -139,8 +140,7 @@ export function SecurityForm() {
             <Field>
               <FieldLabel>{t("currentPassword")}</FieldLabel>
               <FieldContent>
-                <Input
-                  type="password"
+                <PasswordInput
                   placeholder={t("enterCurrentPassword")}
                   {...form.register("currentPassword")}
                 />
@@ -151,8 +151,7 @@ export function SecurityForm() {
             <Field>
               <FieldLabel>{t("newPassword")}</FieldLabel>
               <FieldContent>
-                <Input
-                  type="password"
+                <PasswordInput
                   placeholder={t("enterNewPassword")}
                   {...form.register("newPassword")}
                 />
@@ -163,8 +162,7 @@ export function SecurityForm() {
             <Field>
               <FieldLabel>{t("confirmPassword")}</FieldLabel>
               <FieldContent>
-                <Input
-                  type="password"
+                <PasswordInput
                   placeholder={t("confirmNewPassword")}
                   {...form.register("confirmPassword")}
                 />

@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import {
   Select,
   SelectContent,
@@ -122,8 +123,7 @@ export function CreateUserDialog() {
                 <FormItem>
                   <FormLabel>{t("fields.password")}</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
+                    <PasswordInput
                       placeholder={t("fields.passwordPlaceholder")}
                       {...field}
                     />

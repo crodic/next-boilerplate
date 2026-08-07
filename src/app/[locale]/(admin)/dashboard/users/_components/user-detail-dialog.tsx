@@ -43,7 +43,7 @@ export function UserDetailDialog({ user, ...props }: UserDetailDialogProps) {
 
   return (
     <Dialog {...props}>
-      <DialogContent className="bg-background/80 overflow-hidden border-white/10 shadow-2xl backdrop-blur-xl sm:max-w-md">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader className="border-b pb-4 text-left">
           <DialogTitle className="flex items-center gap-2 text-2xl font-bold">
             {t("dialogs.details.title")}

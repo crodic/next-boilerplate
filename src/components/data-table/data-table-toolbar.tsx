@@ -26,6 +26,8 @@ export function DataTableToolbar<TData>({
   ...props
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+  const isSorted = table.getState().sorting.length > 0;
+  const hasActiveModifiers = isFiltered || isSorted;
 
   const columns = React.useMemo(
     () => table.getAllColumns().filter((column) => column.getCanFilter()),
@@ -34,6 +36,7 @@ export function DataTableToolbar<TData>({
 
   const onReset = React.useCallback(() => {
     table.resetColumnFilters();
+    table.resetSorting();
   }, [table]);
 
   return (
@@ -50,9 +53,9 @@ export function DataTableToolbar<TData>({
         {columns.map((column) => (
           <DataTableToolbarFilter key={column.id} column={column} />
         ))}
-        {isFiltered && (
+        {hasActiveModifiers && (
           <Button
-            aria-label="Reset filters"
+            aria-label="Reset filters and sorting"
             variant="outline"
             className="border-dashed"
             onClick={onReset}

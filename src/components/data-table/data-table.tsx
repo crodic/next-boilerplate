@@ -73,11 +73,15 @@ export function DataTable<TData>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => onRowClick?.(row)}
-                  className={cn(onRowClick && "cursor-pointer hover:bg-muted/50")}
+                  className={cn("group", onRowClick && "cursor-pointer")}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
+                      className={cn(
+                        cell.column.getIsPinned() &&
+                          "transition-colors group-hover:!bg-muted/50"
+                      )}
                       style={{
                         ...getColumnPinningStyle({ column: cell.column }),
                       }}

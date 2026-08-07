@@ -153,7 +153,7 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
                     defaultValue={field.value ? "banned" : "active"}
                   >
                     <FormControl>
-                      <SelectTrigger className="capitalize">
+                      <SelectTrigger className="w-full capitalize">
                         <SelectValue placeholder={t("fields.status")} />
                       </SelectTrigger>
                     </FormControl>
