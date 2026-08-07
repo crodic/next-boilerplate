@@ -7,6 +7,7 @@ import {
   getUsers,
 } from "@/app/[locale]/(admin)/dashboard/users/_lib/queries";
 import { searchParamsCache } from "@/app/[locale]/(admin)/dashboard/users/_lib/validations";
+import { UserRole } from "@/lib/auth-permissions";
 
 export async function GET(req: Request) {
   try {
@@ -14,7 +15,11 @@ export async function GET(req: Request) {
       headers: await headers(),
     });
 
-    if (!session || session.user.role !== "admin") {
+    if (
+      !session ||
+      (session.user.role !== UserRole.ADMIN &&
+        session.user.role !== UserRole.MANAGER)
+    ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

@@ -38,6 +38,7 @@ import { useCreateUserMutation } from "../_hooks/mutations";
 import { type CreateUserSchema, createUserSchema } from "../_lib/validations";
 
 import { useTranslations } from "next-intl";
+import { UserRole } from "@/lib/auth-permissions";
 
 export function CreateUserDialog() {
   const t = useTranslations("Users");
@@ -50,7 +51,7 @@ export function CreateUserDialog() {
       name: "",
       email: "",
       password: "",
-      role: "user",
+      role: UserRole.USER,
     },
   });
 
@@ -149,10 +150,13 @@ export function CreateUserDialog() {
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="user">
+                        <SelectItem value={UserRole.USER}>
                           {t("fields.roleUser")}
                         </SelectItem>
-                        <SelectItem value="admin">
+                        <SelectItem value={UserRole.MANAGER}>
+                          {t("fields.roleManager")}
+                        </SelectItem>
+                        <SelectItem value={UserRole.ADMIN}>
                           {t("fields.roleAdmin")}
                         </SelectItem>
                       </SelectGroup>

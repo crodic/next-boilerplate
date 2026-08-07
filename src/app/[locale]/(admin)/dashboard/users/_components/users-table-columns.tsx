@@ -29,6 +29,7 @@ interface GetUsersTableColumnsProps {
     > | null>
   >;
   t: (key: string) => string;
+  currentUserId?: string;
 }
 
 export function getUsersTableColumns({
@@ -36,6 +37,7 @@ export function getUsersTableColumns({
   statusCounts,
   setRowAction,
   t,
+  currentUserId,
 }: GetUsersTableColumnsProps): ColumnDef<User>[] {
   return [
     {
@@ -56,6 +58,7 @@ export function getUsersTableColumns({
           aria-label="Select row"
           className="translate-y-0.5"
           checked={row.getIsSelected()}
+          disabled={row.original.id === currentUserId}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
         />
       ),
@@ -107,13 +110,22 @@ export function getUsersTableColumns({
         const role = cell.getValue<string | null>() || "user";
         return (
           <Badge
-            variant={role === "admin" ? "gradient" : "secondary"}
             className="w-fit"
+            variant={
+              role === "admin"
+                ? "gradient"
+                : role === "manager"
+                  ? "secondary"
+                  : "outline"
+            }
           >
             {role === "admin" && <Shield className="mr-1 size-3" />}
+            {role === "manager" && <Shield className="mr-1 size-3" />}
             {role === "admin"
               ? t("fields.roleAdmin").toUpperCase()
-              : t("fields.roleUser").toUpperCase()}
+              : role === "manager"
+                ? t("fields.roleManager").toUpperCase()
+                : t("fields.roleUser").toUpperCase()}
           </Badge>
         );
       },
@@ -126,6 +138,12 @@ export function getUsersTableColumns({
             value: "admin",
             count: roleCounts["admin"] || 0,
             icon: ShieldAlert,
+          },
+          {
+            label: t("fields.roleManager"),
+            value: "manager",
+            count: roleCounts["manager"] || 0,
+            icon: Shield,
           },
           {
             label: t("fields.roleUser"),

@@ -157,6 +157,7 @@
       "role": "Vai trò",
       "selectRole": "Chọn vai trò",
       "roleUser": "Người dùng",
+      "roleManager": "Quản lý",
       "roleAdmin": "Quản trị viên",
       "status": "Trạng thái",
       "joinedAt": "Ngày tham gia",

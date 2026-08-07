@@ -3,6 +3,13 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma";
 import { admin, openAPI, multiSession } from "better-auth/plugins";
 import { mailService } from "@/services/mail.service";
+import {
+  ac,
+  adminRole,
+  managerRole,
+  userRole,
+  UserRole,
+} from "./auth-permissions";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -22,7 +29,15 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    admin(),
+    admin({
+      ac,
+      roles: {
+        admin: adminRole,
+        manager: managerRole,
+        user: userRole,
+      },
+      adminRole: [UserRole.ADMIN, UserRole.MANAGER],
+    }),
     openAPI(),
     multiSession({
       maximumSessions: 5,

@@ -34,6 +34,9 @@ import {
 } from "../_hooks/mutations";
 
 import { useTranslations } from "next-intl";
+import { useSession } from "@better-auth-ui/react";
+import { authClient } from "@/lib/auth-client";
+import { UserRole } from "@/lib/auth-permissions";
 
 interface UsersTableActionBarProps {
   table: Table<User>;
@@ -44,6 +47,9 @@ export function UsersTableActionBar({ table }: UsersTableActionBarProps) {
   const rows = table.getFilteredSelectedRowModel().rows;
   const { mutateAsync: updateUsers } = useUpdateUsersMutation();
   const { mutateAsync: deleteUsers } = useDeleteUsersMutation();
+
+  const { data: session } = useSession(authClient);
+  const isManager = session?.user?.role === UserRole.MANAGER;
 
   const onOpenChange = React.useCallback(
     (open: boolean) => {
@@ -106,42 +112,58 @@ export function UsersTableActionBar({ table }: UsersTableActionBarProps) {
             </ActionBarItem>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => onUserUpdate("role", "admin")}>
-              <Shield className="mr-2 size-4" /> {t("fields.roleAdmin")}
+            {!isManager && (
+              <DropdownMenuItem
+                onClick={() => onUserUpdate("role", UserRole.ADMIN)}
+              >
+                <Shield className="mr-2 size-4" /> {t("fields.roleAdmin")}
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuItem
+              onClick={() => onUserUpdate("role", UserRole.MANAGER)}
+            >
+              <Shield className="mr-2 size-4" /> {t("fields.roleManager")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onUserUpdate("role", "user")}>
+            <DropdownMenuItem
+              onClick={() => onUserUpdate("role", UserRole.USER)}
+            >
               <ShieldOff className="mr-2 size-4" /> {t("fields.roleUser")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <ActionBarItem>
-              <Ban className="size-4" />
-              {t("fields.status")}
-            </ActionBarItem>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => onUserUpdate("banned", false)}>
-              <CheckCircle2 className="mr-2 size-4 text-emerald-500" />{" "}
-              {t("fields.active")}
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onUserUpdate("banned", true)}>
-              <Ban className="mr-2 size-4 text-red-500" /> {t("fields.banned")}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {!isManager && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <ActionBarItem>
+                <Ban className="size-4" />
+                {t("fields.status")}
+              </ActionBarItem>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => onUserUpdate("banned", false)}>
+                <CheckCircle2 className="mr-2 size-4 text-emerald-500" />{" "}
+                {t("fields.active")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onUserUpdate("banned", true)}>
+                <Ban className="mr-2 size-4 text-red-500" />{" "}
+                {t("fields.banned")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         <ActionBarItem onClick={onUserExport}>
           <Download className="size-4" />
           {t("actions.export")}
         </ActionBarItem>
 
-        <ActionBarItem variant="destructive" onClick={onUserDelete}>
-          <Trash2 className="size-4" />
-          {t("actions.delete")}
-        </ActionBarItem>
+        {!isManager && (
+          <ActionBarItem variant="destructive" onClick={onUserDelete}>
+            <Trash2 className="size-4" />
+            {t("actions.delete")}
+          </ActionBarItem>
+        )}
       </ActionBarGroup>
     </ActionBar>
   );

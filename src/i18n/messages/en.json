@@ -157,6 +157,7 @@
       "role": "Role",
       "selectRole": "Select a role",
       "roleUser": "User",
+      "roleManager": "Manager",
       "roleAdmin": "Admin",
       "status": "Status",
       "joinedAt": "Joined At",

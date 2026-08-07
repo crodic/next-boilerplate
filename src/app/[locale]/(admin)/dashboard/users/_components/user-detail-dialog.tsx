@@ -20,6 +20,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { User } from "@/generated/prisma/client";
 
 import { useTranslations } from "next-intl";
+import { UserRole } from "@/lib/auth-permissions";
 
 interface UserDetailDialogProps extends React.ComponentPropsWithRef<
   typeof Dialog
@@ -67,12 +68,25 @@ export function UserDetailDialog({ user, ...props }: UserDetailDialogProps) {
               </h2>
               <div className="flex items-center gap-2">
                 <Badge
-                  variant={user.role === "admin" ? "gradient" : "secondary"}
+                  variant={
+                    user.role === UserRole.ADMIN
+                      ? "gradient"
+                      : user.role === UserRole.MANAGER
+                        ? "secondary"
+                        : "outline"
+                  }
                 >
-                  {user.role === "admin" && <Shield className="mr-1 size-3" />}
-                  {user.role === "admin"
+                  {user.role === UserRole.ADMIN && (
+                    <Shield className="mr-1 size-3" />
+                  )}
+                  {user.role === UserRole.MANAGER && (
+                    <Shield className="mr-1 size-3" />
+                  )}
+                  {user.role === UserRole.ADMIN
                     ? t("fields.roleAdmin").toUpperCase()
-                    : t("fields.roleUser").toUpperCase()}
+                    : user.role === UserRole.MANAGER
+                      ? t("fields.roleManager").toUpperCase()
+                      : t("fields.roleUser").toUpperCase()}
                 </Badge>
                 <Badge
                   variant={user.banned ? "destructive" : "outline"}

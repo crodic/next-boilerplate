@@ -24,6 +24,8 @@ interface UsersTableProps {
 }
 
 import { useTranslations } from "next-intl";
+import { useSession } from "@better-auth-ui/react";
+import { authClient } from "@/lib/auth-client";
 
 export function UsersTable({ queryKeys }: UsersTableProps) {
   const t = useTranslations("Users");
@@ -41,6 +43,8 @@ export function UsersTable({ queryKeys }: UsersTableProps) {
     UsersTableActionVariant
   > | null>(null);
 
+  const { data: session } = useSession(authClient);
+
   const columns = React.useMemo(
     () =>
       getUsersTableColumns({
@@ -48,8 +52,9 @@ export function UsersTable({ queryKeys }: UsersTableProps) {
         statusCounts: queryData?.statusCounts ?? {},
         setRowAction,
         t,
+        currentUserId: session?.user?.id,
       }),
-    [queryData?.roleCounts, queryData?.statusCounts, t]
+    [queryData?.roleCounts, queryData?.statusCounts, t, session?.user?.id]
   );
 
   const { table } = useDataTable({

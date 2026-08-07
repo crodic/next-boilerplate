@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
+import { UserRole } from "./lib/auth-permissions";
 import { auth } from "./lib/auth";
 import { headers } from "next/headers";
 
@@ -53,7 +54,10 @@ export async function proxy(request: NextRequest) {
       pathnameWithoutLocale === "/dashboard" ||
       pathnameWithoutLocale.startsWith("/dashboard/")
     ) {
-      if (session.user.role !== "admin") {
+      if (
+        session.user.role !== UserRole.ADMIN &&
+        session.user.role !== UserRole.MANAGER
+      ) {
         const homeUrl = new URL(`/${locale}/`, request.url);
         return NextResponse.redirect(homeUrl);
       }

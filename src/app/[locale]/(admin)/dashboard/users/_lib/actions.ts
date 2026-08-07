@@ -1,6 +1,8 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+
+import { UserRole } from "@/lib/auth-permissions";
 import { revalidatePath } from "next/cache";
 import type { UpdateUserSchema } from "./validations";
 import { getUsers, getUserRoleCounts, getUserStatusCounts } from "./queries";
@@ -10,6 +12,17 @@ import type { GetUsersSchema } from "./validations";
 
 export async function updateUser(input: UpdateUserSchema) {
   try {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (
+      !session ||
+      (session.user.role !== UserRole.ADMIN &&
+        session.user.role !== UserRole.MANAGER)
+    ) {
+      throw new Error("Unauthorized");
+    }
+    if (input.id === session.user.id) {
+      throw new Error("You cannot modify your own account from the dashboard.");
+    }
     await prisma.user.update({
       where: { id: input.id },
       data: {
@@ -28,6 +41,13 @@ export async function updateUser(input: UpdateUserSchema) {
 
 export async function deleteUsers(input: { ids: string[] }) {
   try {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (!session || session.user.role !== UserRole.ADMIN) {
+      throw new Error("Unauthorized");
+    }
+    if (input.ids.includes(session.user.id)) {
+      throw new Error("You cannot delete your own account.");
+    }
     await prisma.user.deleteMany({
       where: {
         id: {
@@ -48,6 +68,17 @@ export async function updateUsers(input: {
   banned?: boolean;
 }) {
   try {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (
+      !session ||
+      (session.user.role !== UserRole.ADMIN &&
+        session.user.role !== UserRole.MANAGER)
+    ) {
+      throw new Error("Unauthorized");
+    }
+    if (input.ids.includes(session.user.id)) {
+      throw new Error("You cannot modify your own account from the dashboard.");
+    }
     const data: any = {};
     if (input.role !== undefined) data.role = input.role;
     if (input.banned !== undefined) data.banned = input.banned;
@@ -74,7 +105,11 @@ export async function fetchUsersAction(input: GetUsersSchema) {
     headers: await headers(),
   });
 
-  if (!session || session.user.role !== "admin") {
+  if (
+    !session ||
+    (session.user.role !== UserRole.ADMIN &&
+      session.user.role !== UserRole.MANAGER)
+  ) {
     throw new Error("Unauthorized");
   }
 

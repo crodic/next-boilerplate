@@ -17,6 +17,9 @@ import { updateUser } from "../_lib/actions";
 import type { UsersTableActionVariant } from "./users-table-columns";
 
 import { useTranslations } from "next-intl";
+import { useSession } from "@better-auth-ui/react";
+import { authClient } from "@/lib/auth-client";
+import { UserRole } from "@/lib/auth-permissions";
 
 interface UsersTableRowActionsProps {
   row: { original: User };
@@ -34,6 +37,9 @@ export function UsersTableRowActions({
 }: UsersTableRowActionsProps) {
   const t = useTranslations("Users");
   const [isUpdatePending, startUpdateTransition] = React.useTransition();
+  const { data: session } = useSession(authClient);
+  const isManager = session?.user?.role === UserRole.MANAGER;
+  const isCurrentUser = session?.user?.id === row.original.id;
 
   return (
     <div className="flex items-center justify-end gap-1">
@@ -43,9 +49,11 @@ export function UsersTableRowActions({
             <Button
               variant="ghost"
               size="icon"
-              className="size-8 transition-transform hover:scale-110"
+              disabled={isCurrentUser}
+              className={`size-8 transition-transform hover:scale-110 ${isCurrentUser ? "opacity-50" : ""}`}
               onClick={(e) => {
                 e.stopPropagation();
+                if (isCurrentUser) return;
                 setRowAction({ row: row as any, variant: "update" });
               }}
             >
@@ -55,65 +63,75 @@ export function UsersTableRowActions({
           <TooltipContent>{t("actions.editDetails")}</TooltipContent>
         </Tooltip>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={isUpdatePending}
-              className="size-8 transition-transform hover:scale-110"
-              onClick={(e) => {
-                e.stopPropagation();
-                startUpdateTransition(() => {
-                  toast.promise(
-                    updateUser({
-                      id: row.original.id,
-                      banned: !row.original.banned,
-                    }),
-                    {
-                      loading: row.original.banned
-                        ? t("messages.unbanning")
-                        : t("messages.banning"),
-                      success: row.original.banned
-                        ? t("messages.unbanSuccess")
-                        : t("messages.banSuccess"),
-                      error: (err) => (err as Error).message,
-                    }
-                  );
-                });
-              }}
-            >
-              <Ban
-                className={`size-4 ${
-                  row.original.banned ? "text-green-500" : "text-orange-500"
-                }`}
-                aria-hidden="true"
-              />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            {row.original.banned
-              ? t("actions.unbanUser")
-              : t("actions.banUser")}
-          </TooltipContent>
-        </Tooltip>
+        {!isManager && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={isUpdatePending || isCurrentUser}
+                className={`size-8 transition-transform hover:scale-110 ${isCurrentUser ? "opacity-50" : ""}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isCurrentUser) return;
+                  startUpdateTransition(() => {
+                    toast.promise(
+                      updateUser({
+                        id: row.original.id,
+                        banned: !row.original.banned,
+                      }),
+                      {
+                        loading: row.original.banned
+                          ? t("messages.unbanning")
+                          : t("messages.banning"),
+                        success: row.original.banned
+                          ? t("messages.unbanSuccess")
+                          : t("messages.banSuccess"),
+                        error: (err) => (err as Error).message,
+                      }
+                    );
+                  });
+                }}
+              >
+                <Ban
+                  className={`size-4 ${
+                    row.original.banned ? "text-green-500" : "text-orange-500"
+                  }`}
+                  aria-hidden="true"
+                />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {row.original.banned
+                ? t("actions.unbanUser")
+                : t("actions.banUser")}
+            </TooltipContent>
+          </Tooltip>
+        )}
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8 transition-transform hover:scale-110"
-              onClick={(e) => {
-                e.stopPropagation();
-                setRowAction({ row: row as any, variant: "delete" });
-              }}
-            >
-              <Trash2 className="text-destructive size-4" aria-hidden="true" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>{t("actions.deleteUser")}</TooltipContent>
-        </Tooltip>
+        {!isManager && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={isCurrentUser}
+                className={`size-8 transition-transform hover:scale-110 ${isCurrentUser ? "opacity-50" : ""}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isCurrentUser) return;
+                  setRowAction({ row: row as any, variant: "delete" });
+                }}
+              >
+                <Trash2
+                  className="text-destructive size-4"
+                  aria-hidden="true"
+                />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{t("actions.deleteUser")}</TooltipContent>
+          </Tooltip>
+        )}
       </TooltipProvider>
     </div>
   );

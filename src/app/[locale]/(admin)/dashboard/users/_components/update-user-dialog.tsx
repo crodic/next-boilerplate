@@ -38,6 +38,7 @@ import { useUpdateUserMutation } from "../_hooks/mutations";
 import { type UpdateUserSchema, updateUserSchema } from "../_lib/validations";
 
 import { useTranslations } from "next-intl";
+import { UserRole } from "@/lib/auth-permissions";
 
 interface UpdateUserDialogProps extends React.ComponentPropsWithRef<
   typeof Dialog
@@ -54,7 +55,7 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
     defaultValues: {
       id: user?.id ?? "",
       name: user?.name ?? "",
-      role: user?.role ?? "user",
+      role: user?.role ?? UserRole.USER,
       banned: user?.banned ?? false,
     },
   });
@@ -63,7 +64,7 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
     form.reset({
       id: user?.id ?? "",
       name: user?.name ?? "",
-      role: user?.role ?? "user",
+      role: user?.role ?? UserRole.USER,
       banned: user?.banned ?? false,
     });
   }, [user, form]);
@@ -129,10 +130,13 @@ export function UpdateUserDialog({ user, ...props }: UpdateUserDialogProps) {
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="user">
+                        <SelectItem value={UserRole.USER}>
                           {t("fields.roleUser")}
                         </SelectItem>
-                        <SelectItem value="admin">
+                        <SelectItem value={UserRole.MANAGER}>
+                          {t("fields.roleManager")}
+                        </SelectItem>
+                        <SelectItem value={UserRole.ADMIN}>
                           {t("fields.roleAdmin")}
                         </SelectItem>
                       </SelectGroup>

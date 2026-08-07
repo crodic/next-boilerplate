@@ -8,6 +8,7 @@ import {
 import * as z from "zod";
 import { getFiltersStateParser, getSortingStateParser } from "@/lib/parsers";
 import type { Prisma } from "@/generated/prisma/client";
+import { UserRole } from "@/lib/auth-permissions";
 
 export const searchParamsCache = createSearchParamsCache({
   page: parseAsInteger.withDefault(1),
@@ -34,9 +35,9 @@ export const updateUserSchema = z.object({
 
 export const createUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email"),
+  email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  role: z.enum(["user", "admin"]),
+  role: z.nativeEnum(UserRole),
 });
 
 export type GetUsersSchema = Awaited<

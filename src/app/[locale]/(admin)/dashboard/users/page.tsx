@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { UsersTable } from "./_components/users-table";
+import { UserRole } from "@/lib/auth-permissions";
 import { UsersRound } from "lucide-react";
 import { PageShell } from "@/components/admin/page-shell";
 import { CreateUserDialog } from "./_components/create-user-dialog";
@@ -19,7 +20,11 @@ export default async function DashboardPage(props: UsersPageProps) {
     headers: await headers(),
   });
 
-  if (!session || session.user.role !== "admin") {
+  if (
+    !session ||
+    (session.user.role !== UserRole.ADMIN &&
+      session.user.role !== UserRole.MANAGER)
+  ) {
     // If not admin, you could redirect or show an unauthorized message
     // For now, let's just let it load to show the UI
   }
