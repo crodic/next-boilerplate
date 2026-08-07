@@ -55,28 +55,22 @@ export function AppSidebar({
               >
                 {/* Light Mode Logo */}
                 <div className="flex items-center justify-center dark:hidden">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={logoLight || "/logo.png"}
                     alt="Logo"
-                    width={120}
-                    height={48}
-                    className="h-auto max-h-12 w-auto object-contain"
-                    priority
-                    unoptimized={!!logoLight}
+                    className="h-auto w-full max-w-25 object-contain"
                   />
                 </div>
                 {/* Dark Mode Logo */}
                 <div
                   className={`hidden items-center justify-center dark:flex ${!logoDark ? "dark:invert" : ""}`}
                 >
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={logoDark || "/logo.png"}
                     alt="Logo"
-                    width={120}
-                    height={48}
-                    className="h-auto max-h-12 w-auto object-contain"
-                    priority
-                    unoptimized={!!logoDark}
+                    className="h-auto w-full max-w-25 object-contain"
                   />
                 </div>
               </Link>
