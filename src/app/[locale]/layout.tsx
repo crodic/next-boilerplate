@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { cookies } from "next/headers";
 import type { Metadata } from "next";
+import { getWebsiteSettings } from "@/actions/settings";
 
 export async function generateMetadata({
   params,
@@ -17,10 +18,44 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const settings = await getWebsiteSettings();
+
+  const title = settings.title || t("title");
+  const description = settings.description || t("description");
+
+  const icons: { url: string; media?: string }[] = [];
+  if (settings.faviconLight) {
+    icons.push({
+      url: settings.faviconLight,
+      media: "(prefers-color-scheme: light)",
+    });
+  }
+  if (settings.faviconDark) {
+    icons.push({
+      url: settings.faviconDark,
+      media: "(prefers-color-scheme: dark)",
+    });
+  }
 
   return {
-    title: t("title"),
-    description: t("description"),
+    title: {
+      template: `%s | ${title}`,
+      default: title,
+    },
+    description,
+    keywords: settings.keywords || undefined,
+    authors: settings.author ? [{ name: settings.author }] : undefined,
+    icons: icons.length > 0 ? icons : undefined,
+    openGraph: {
+      title,
+      description,
+      images: settings.ogImage ? [settings.ogImage] : undefined,
+    },
+    twitter: {
+      title,
+      description,
+      images: settings.twitterImage ? [settings.twitterImage] : undefined,
+    },
   };
 }
 
