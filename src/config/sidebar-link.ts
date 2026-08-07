@@ -1,5 +1,6 @@
 import { LayoutDashboard, UserLock, Settings } from "lucide-react";
 import { type SidebarData } from "@/types/nav";
+import { APP_ROUTES } from "./routes";
 
 export const sidebarLink: SidebarData = {
   navGroups: [
@@ -8,8 +9,10 @@ export const sidebarLink: SidebarData = {
       items: [
         {
           title: "dashboard",
-          url: "/dashboard",
+          url: APP_ROUTES.dashboard.url,
           icon: LayoutDashboard,
+          roles: APP_ROUTES.dashboard.roles,
+          permissions: APP_ROUTES.dashboard.permissions,
         },
       ],
     },
@@ -18,8 +21,10 @@ export const sidebarLink: SidebarData = {
       items: [
         {
           title: "users",
-          url: "/dashboard/users",
+          url: APP_ROUTES.users.url,
           icon: UserLock,
+          roles: APP_ROUTES.users.roles,
+          permissions: APP_ROUTES.users.permissions,
         },
       ],
     },
@@ -28,8 +33,10 @@ export const sidebarLink: SidebarData = {
       items: [
         {
           title: "website",
-          url: "/dashboard/website",
+          url: APP_ROUTES.websiteSettings.url,
           icon: Settings,
+          roles: APP_ROUTES.websiteSettings.roles,
+          permissions: APP_ROUTES.websiteSettings.permissions,
         },
       ],
     },

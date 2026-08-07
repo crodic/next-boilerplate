@@ -1,9 +1,13 @@
 import * as React from "react";
+import type { UserRole } from "@/lib/auth-permissions";
+import type { RoutePermission } from "@/config/routes";
 
 type BaseNavItem = {
   title: string;
   badge?: string;
   icon?: React.ElementType;
+  roles?: UserRole[];
+  permissions?: RoutePermission[];
 };
 
 type NavLink = BaseNavItem & {

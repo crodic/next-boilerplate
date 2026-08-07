@@ -20,6 +20,8 @@ import { Link } from "@/i18n/routing";
 import Image from "next/image";
 
 import { useSession, useAuth } from "@better-auth-ui/react";
+import { roles, UserRole } from "@/lib/auth-permissions";
+import type { NavItem } from "@/types/nav";
 
 export function AppSidebar({
   logoLight,
@@ -38,6 +40,58 @@ export function AppSidebar({
     email: session?.user?.email || "anonymous@example.com",
     avatar: session?.user?.image || "",
   };
+
+  const userRoleStr = (session?.user as any)?.role as UserRole | undefined;
+  const userRoleObj = userRoleStr ? roles[userRoleStr] : undefined;
+
+  const hasAccess = React.useCallback(
+    (item: NavItem) => {
+      if (!item.roles && !item.permissions) return true; // No restrictions
+
+      // Check role
+      if (item.roles && userRoleStr && item.roles.includes(userRoleStr)) {
+        return true;
+      }
+
+      // Check permission
+      if (item.permissions && userRoleObj?.statements) {
+        const hasPerm = item.permissions.some((p) => {
+          return (userRoleObj.statements as any)?.[p.resource]?.includes(
+            p.action
+          );
+        });
+        if (hasPerm) return true;
+      }
+
+      return false;
+    },
+    [userRoleStr, userRoleObj]
+  );
+
+  const filteredNavGroups = React.useMemo(() => {
+    return sidebarLink.navGroups
+      .map((group) => {
+        // For NavCollapsible (which has items array)
+        const filteredItems = group.items
+          .map((item) => {
+            if ("items" in item && item.items) {
+              const filteredSubItems = item.items.filter((subItem) =>
+                hasAccess(subItem as any)
+              );
+              return { ...item, items: filteredSubItems };
+            }
+            return item;
+          })
+          .filter((item) => {
+            if (!hasAccess(item)) return false;
+            if ("items" in item && item.items) return item.items.length > 0;
+            return true;
+          });
+
+        return { ...group, items: filteredItems };
+      })
+      .filter((group) => group.items.length > 0);
+  }, [hasAccess]);
 
   return (
     <Sidebar collapsible={collapsible} variant={variant} {...props}>
@@ -79,7 +133,7 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {sidebarLink.navGroups.map((props) => (
+        {filteredNavGroups.map((props) => (
           <NavGroup key={props.title} {...props} />
         ))}
       </SidebarContent>
